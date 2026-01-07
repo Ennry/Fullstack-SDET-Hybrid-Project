@@ -83,7 +83,7 @@ npx playwright show-report
 ```
 ## 📊 Test Commands
 
-```powershell
+```bash
 npx playwright test	Run all tests
 npx playwright test --grep "@smoke"	Run smoke tests
 npx playwright test --grep "@crud"	Run CRUD tests
@@ -94,19 +94,19 @@ npx playwright show-report	View HTML report
 
 ## 🧪 Test Categories
 
-```powershell
-@smoke -	Quick health check	GET endpoints
-@crud -	Full lifecycle	Create, Read, Update, Delete
-@negative -	Error handling	401, 404, 422 responses
-@data-driven - Multiple variations	Valid & invalid data
-@schema -	Contract testing	JSON Schema validation
+```bash
+@smoke Quick health check	GET endpoints
+@crud Full lifecycle	Create, Read, Update, Delete
+@negative Error handling	401, 404, 422 responses
+@data-driven Multiple variations	Valid & invalid data
+@schema Contract testing	JSON Schema validation
 ```
 
 ## ⚙️ Environment Variables
 
 Create a .env file based on .env.example:
 
-```powershell
+```bash
 API_BASE_URL=https://conduit-api.bondaracademy.com/api
 USER_EMAIL=your-email@example.com
 USER_PASSWORD=your-password
