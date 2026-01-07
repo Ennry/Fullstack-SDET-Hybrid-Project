@@ -1,3 +1,5 @@
+![API Tests](https://github.com/Ennry/playwright-api-testing-framework/actions/workflows/ci.yml/badge.svg)
+
 # 🚀 Playwright API Testing Framework Made in Scratch By Ennry
 
 A professional API testing framework built with Playwright and TypeScript.
