@@ -7,7 +7,6 @@ A professional API testing framework built with Playwright and TypeScript.
 ## 👤 Author
 
 **Ennry** - [GitHub](https://github.com/Ennry)
-"@ | Set-Content README.md
 
 ## ✨ Features
 
