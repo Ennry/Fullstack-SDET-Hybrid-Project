@@ -86,20 +86,20 @@ npx playwright show-report
 ```bash
 npx playwright test	Run all tests
 npx playwright test --grep "@smoke"	Run smoke tests
-npx playwright test --grep "@crud"	Run CRUD tests
-npx playwright test --grep "@negative"	Run error handling tests
+npx playwright test --grep "@crud" Run CRUD tests
+npx playwright test --grep "@negative" Run error handling tests
 npx playwright test --grep "@data-driven"	Run data-driven tests
-npx playwright show-report	View HTML report
+npx playwright show-report View HTML report
 ```
 
 ## 🧪 Test Categories
 
 ```bash
-@smoke Quick health check	GET endpoints
-@crud Full lifecycle	Create, Read, Update, Delete
-@negative Error handling	401, 404, 422 responses
-@data-driven Multiple variations	Valid & invalid data
-@schema Contract testing	JSON Schema validation
+@smoke - Quick health check	GET endpoints
+@crud - Full lifecycle Create, Read, Update, Delete
+@negative - Error handling 401, 404, 422 responses
+@data-driven - Multiple variations Valid & invalid data
+@schema - Contract testing JSON Schema validation
 ```
 
 ## ⚙️ Environment Variables
