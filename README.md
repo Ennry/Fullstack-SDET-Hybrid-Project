@@ -30,6 +30,7 @@ A professional **Hybrid UI + API** testing framework built with Playwright and T
 
 ## 🔥 Hybrid Testing Approach
 
+```text
 Traditional UI Test (Slow ❌):
 ├── Login via UI (5 sec)
 ├── Create article via UI (10 sec)
@@ -41,6 +42,7 @@ Hybrid Test (Fast ✅):
 ├── UI: Verify display (3 sec)
 ├── API: Cleanup (1 sec)
 └── Total: 5 seconds
+```
 
 ### Example Hybrid Test
 
@@ -63,44 +65,46 @@ test('Create via API, Verify in UI', async ({ authApi, authPage }) => {
 
 ## 📁 Project Structure
 
-playwright-hybrid-testing-framework/
+```text
+Fullstack-SDET-Hybrid-Project/
 │
-├── 📂 pages/                        # Page Object Model
-│   ├── BasePage.ts                  # Base page class
-│   ├── LoginPage.ts                 # Login page actions
-│   ├── HomePage.ts                  # Home page actions
-│   ├── ArticlePage.ts               # Article page actions
-│   └── EditorPage.ts                # Editor page actions
+├── 📂 pages/
+│   ├── BasePage.ts
+│   ├── LoginPage.ts
+│   ├── HomePage.ts
+│   ├── ArticlePage.ts
+│   └── EditorPage.ts
 │
 ├── 📂 tests/
-│   ├── api.spec.ts                  # CRUD + Schema validation
-│   ├── data-driven.spec.ts          # Parameterized tests
-│   ├── error-handling.spec.ts       # Negative test cases
-│   └── hybrid.spec.ts               # UI + API hybrid tests
+│   ├── api.spec.ts
+│   ├── data-driven.spec.ts
+│   ├── error-handling.spec.ts
+│   └── hybrid.spec.ts
 │
 ├── 📂 schemas/
-│   ├── article.schema.json          # Single article schema
-│   ├── articles.schema.json         # Articles list schema
-│   └── tags.schema.json             # Tags schema
+│   ├── article.schema.json
+│   ├── articles.schema.json
+│   └── tags.schema.json
 │
 ├── 📂 utils/
-│   ├── apiHelper.ts                 # Fluent HTTP client
-│   ├── fixtures.ts                  # Test fixtures (API + UI)
-│   ├── schemaValidator.ts           # AJV wrapper
-│   ├── dataFactory.ts               # Test data generation
-│   ├── stateManager.ts              # Shared test state
-│   ├── logger.ts                    # Custom logging
-│   └── config.ts                    # Configuration
+│   ├── apiHelper.ts
+│   ├── fixtures.ts
+│   ├── schemaValidator.ts
+│   ├── dataFactory.ts
+│   ├── stateManager.ts
+│   ├── logger.ts
+│   └── config.ts
 │
 ├── 📂 .github/workflows/
-│   └── ci.yml                       # GitHub Actions pipeline
+│   └── ci.yml
 │
-├── .env.example                     # Environment template
-├── .gitignore                       # Git ignore rules
-├── playwright.config.ts             # Playwright configuration
-├── tsconfig.json                    # TypeScript configuration
-├── package.json                     # Dependencies
-└── README.md                        # Documentation
+├── .env.example
+├── .gitignore
+├── playwright.config.ts
+├── tsconfig.json
+├── package.json
+└── README.md
+```
 
 ## 🚀 Quick Start
 
@@ -115,7 +119,7 @@ cd Fullstack-SDET-Hybrid-Project
 npm install
 
 # Setup environment
-cp .env.example .env (Sign up and replace .env credentials in "https://conduit.bondaracademy.com/")
+cp .env.example .env (Sign up and replace .env credentials from "https://conduit.bondaracademy.com/")
 
 # Run all tests
 npx playwright test
@@ -126,27 +130,27 @@ npx playwright show-report
 ## 📊 Test Commands
 
 ```bash
-npx playwright test	Run all tests
-npx playwright test --project=api-tests -> Run API tests only
-npx playwright test --project=hybrid-tests -> Run hybrid tests only
-npx playwright test --project=hybrid-tests --headed	-> Run hybrid with browser visible
-npx playwright test --grep "@smoke" -> Run smoke tests
-npx playwright test --grep "@crud" -> Run CRUD tests
-npx playwright test --grep "@negative" -> Run error handling tests
-npx playwright test --grep "@data-driven" -> Run data-driven tests
-npx playwright test --grep "@hybrid" -> Run hybrid tests
-npx playwright show-report -> View HTML report
+npx playwright test	- Run all tests
+npx playwright test --project=api-tests - Run API tests only
+npx playwright test --project=hybrid-tests - Run hybrid tests only
+npx playwright test --project=hybrid-tests --headed	- Run hybrid with browser visible
+npx playwright test --grep "@smoke" - Run smoke tests
+npx playwright test --grep "@crud" - Run CRUD tests
+npx playwright test --grep "@negative" - Run error handling tests
+npx playwright test --grep "@data-driven" - Run data-driven tests
+npx playwright test --grep "@hybrid" - Run hybrid tests
+npx playwright show-report - View HTML report
 ```
 
 ## 🧪 Test Categories
 
 ```bash
-@smoke -> Quick health check GET endpoints
-@crud -> Full lifecycle Create, Read, Update, Delete
-@negative -> Error handling 401, 404, 422 responses
-@data-driven -> Multiple variations Valid & invalid data
-@schema -> Contract testing JSON Schema validation
-@hybrid -> UI + API combined Fast, reliable tests
+@smoke - Quick health check GET endpoints
+@crud - Full lifecycle Create, Read, Update, Delete
+@negative - Error handling 401, 404, 422 responses
+@data-driven - Multiple variations Valid / invalid data
+@schema - Contract testing JSON Schema validation
+@hybrid - UI + API combined Fast, reliable tests
 ```
 ## 🔧 API Helper Usage
 
@@ -189,10 +193,10 @@ USER_PASSWORD=your-password
 
 Tests run automatically on:
 
-```
-✅ Push to main branch
-✅ Pull requests to main branch
-```
+- ✅ Push to `main` branch
+- ✅ Pull requests to `main` branch
+
+View results: [GitHub Actions](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions)
 
 ## 🎯 Skills Demonstrated
 ✅ API Testing with Playwright
