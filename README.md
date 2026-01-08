@@ -12,7 +12,7 @@ A professional **Hybrid UI + API** testing framework built with Playwright and T
 
 ---
 
-## 🎯 Skills & Features
+## ✨ Skills & Features
 
 ![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=flat&logo=playwright&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
@@ -235,32 +235,6 @@ Tests run automatically on:
 - ✅ Pull requests to `main` branch
 
 View results: [GitHub Actions](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions)
-
-## 🎯 Skills Demonstrated
-
-```markdown
-### Testing Skills
-- ✅ API Testing with Playwright
-- ✅ UI Testing with Page Object Model
-- ✅ Hybrid Testing (API + UI)
-- ✅ Data-Driven Testing
-- ✅ Error Handling / Negative Testing
-- ✅ JSON Schema Validation
-
-### Technical Skills
-- ✅ TypeScript
-- ✅ Playwright Framework
-- ✅ CI/CD with GitHub Actions
-- ✅ Environment Configuration
-
-### Framework Design
-- ✅ Fluent Interface Pattern
-- ✅ Page Object Model (POM)
-- ✅ Custom Logger
-- ✅ Data Factory Pattern
-- ✅ State Management
-- ✅ Reusable Fixtures
-```
 
 ## 📝 License
 
