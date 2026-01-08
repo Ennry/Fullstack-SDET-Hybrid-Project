@@ -30,54 +30,46 @@ export default defineConfig({
   },
 
   projects: [
+    // API Tests
     {
       name: 'api-tests',
       testMatch: ['api.spec.ts', 'data-driven.spec.ts', 'error-handling.spec.ts']
     },
+
+    // Desktop Browsers
     {
-      name: 'hybrid-tests',
+      name: 'chromium',
       testMatch: 'hybrid.spec.ts',
-      use: {
-        browserName: 'chromium',
-        headless: true
-      }
+      use: { ...devices['Desktop Chrome'] }
+    },
+    {
+      name: 'firefox',
+      testMatch: 'hybrid.spec.ts',
+      use: { ...devices['Desktop Firefox'] }
+    },
+    {
+      name: 'webkit',
+      testMatch: 'hybrid.spec.ts',
+      use: { ...devices['Desktop Safari'] }
+    },
+
+    // Mobile Browsers (Optional)
+    {
+      name: 'mobile-chrome',
+      testMatch: 'hybrid.spec.ts',
+      use: { ...devices['Pixel 5'] }
+    },
+    {
+      name: 'mobile-safari',
+      testMatch: 'hybrid.spec.ts',
+      use: { ...devices['iPhone 12'] }
     }
   ]
 })
 
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
- 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+/* Run your local dev server before starting the tests */
+// webServer: {
+//   command: 'npm run start',
+//   url: 'http://localhost:3000',
+//   reuseExistingServer: !process.env.CI,
+// },

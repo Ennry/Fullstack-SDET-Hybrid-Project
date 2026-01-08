@@ -47,7 +47,7 @@ export const test = base.extend<Fixtures>({
     },
 
     authPage: async ({ page, request }, use) => {
-        // Login via API (faster!)
+        // Login via API
         const loginResponse = await request.post(`${config.baseUrl}/users/login`, {
             data: {
                 user: {
@@ -60,13 +60,21 @@ export const test = base.extend<Fixtures>({
         const loginBody = await loginResponse.json()
         const token = loginBody.user.token
 
-        // Set token in browser
+        // Go to site first
         await page.goto('https://conduit.bondaracademy.com')
+
+        // Set token in localStorage
         await page.evaluate((token) => {
             localStorage.setItem('jwtToken', token)
         }, token)
 
+        // Reload and wait for login to apply
         await page.reload()
+        await page.waitForLoadState('networkidle')
+
+        // Verify logged in (no "Sign in" link visible)
+        await page.waitForSelector('a[href="/editor"]', { timeout: 10000 })
+
         await use(page)
     },
 
