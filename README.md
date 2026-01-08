@@ -27,6 +27,8 @@ A professional **Hybrid UI + API** testing framework built with Playwright and T
 | | Contract Testing | JSON Schema / AJV |
 | | Data-Driven | Parameterized Tests |
 | | Error Handling | Negative Test Cases |
+| | Cross-Browser | Chrome, Firefox, Safari |
+| | Mobile Testing | Pixel 5, iPhone 12 |
 | **Design Patterns** | Fluent Interface | `apiHelper.ts` |
 | | Factory Pattern | `dataFactory.ts` |
 | | Page Object Model | `pages/*.ts` |
@@ -36,7 +38,6 @@ A professional **Hybrid UI + API** testing framework built with Playwright and T
 | | Test Fixtures | Auto-Authentication |
 | **DevOps** | CI/CD | GitHub Actions |
 | | Reporting | Playwright HTML Reports |
-
 ---
 
 ### Custom Logger Example
@@ -189,6 +190,18 @@ npx playwright show-report - View HTML report
 @schema - Contract testing JSON Schema validation
 @hybrid - UI + API combined Fast, reliable tests
 ```
+
+## 🌐 Cross-Browser Testing
+
+| Browser | Command |
+|---------|---------|
+| Chrome | `npx playwright test --project=chromium` |
+| Firefox | `npx playwright test --project=firefox` |
+| Safari | `npx playwright test --project=webkit` |
+| Mobile Chrome | `npx playwright test --project=mobile-chrome` |
+| Mobile Safari | `npx playwright test --project=mobile-safari` |
+| All Browsers | `npx playwright test` |
+
 ## 🔧 API Helper Usage
 
 ```TypeScript
