@@ -12,21 +12,58 @@ A professional **Hybrid UI + API** testing framework built with Playwright and T
 
 ---
 
-## ✨ Features
+## 🎯 Skills & Features
 
-| Feature | Description |
-|---------|-------------|
-| **Hybrid Testing** | Combine API and UI tests for maximum efficiency |
-| **Page Object Model** | Clean, maintainable UI test structure |
-| **Fluent API Design** | Chainable syntax for readable API tests |
-| **JSON Schema Validation** | Contract testing with AJV |
-| **Data-Driven Testing** | Multiple test cases from arrays |
-| **Automatic Authentication** | Token management via fixtures |
-| **Custom Logger** | Detailed request/response logging |
-| **Environment Configuration** | Secure credential management |
-| **CI/CD Pipeline** | Automated testing with GitHub Actions |
+![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=flat&logo=playwright&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=github-actions&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
+
+| Category | Skill | Implementation |
+|----------|-------|----------------|
+| **Testing** | API Testing | Fluent API Helper |
+| | UI Testing | Page Object Model |
+| | Hybrid Testing | API + UI Combined |
+| | Contract Testing | JSON Schema / AJV |
+| | Data-Driven | Parameterized Tests |
+| | Error Handling | Negative Test Cases |
+| **Design Patterns** | Fluent Interface | `apiHelper.ts` |
+| | Factory Pattern | `dataFactory.ts` |
+| | Page Object Model | `pages/*.ts` |
+| **Utilities** | Custom Logger | Request/Response Logging |
+| | Config Manager | Environment Variables |
+| | State Manager | Shared Test State |
+| | Test Fixtures | Auto-Authentication |
+| **DevOps** | CI/CD | GitHub Actions |
+| | Reporting | Playwright HTML Reports |
 
 ---
+
+### Custom Logger Example
+
+```typescript
+// Automatic logging for all requests
+🔄 [REQUEST] 2026-01-08T10:30:45.123Z - POST /articles
+📦 Body: { "article": { "title": "Test" } }
+📥 [RESPONSE] 2026-01-08T10:30:45.456Z - Status: 201
+✅ [SUCCESS] Article created: test-article-123
+```
+
+### Fluent API Helper Example
+
+```typescript
+// Clean, chainable syntax
+const response = await authApi
+    .path('/articles')
+    .postRequest(201, dataFactory.article('Test'))
+```
+
+### Data Factory Example
+```typescript
+// Reusable test data
+const article = dataFactory.article('CRUD')
+// Returns: { article: { title: "CRUD Article 1234567890", ... } }
+```
 
 ## 🔥 Hybrid Testing Approach
 
@@ -179,6 +216,7 @@ await articlePage.goto(slug)
 const title = await articlePage.getTitle()
 expect(title).toContain('My Article')
 ```
+
 ## ⚙️ Environment Variables
 
 Create a .env file based on .env.example:
@@ -199,15 +237,30 @@ Tests run automatically on:
 View results: [GitHub Actions](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions)
 
 ## 🎯 Skills Demonstrated
-✅ API Testing with Playwright
-✅ UI Testing with Page Object Model
-✅ Hybrid Testing (API + UI)
-✅ TypeScript
-✅ JSON Schema Validation
-✅ CI/CD with GitHub Actions
-✅ Data-Driven Testing
-✅ Error Handling Testing
-✅ Framework Architecture
+
+```markdown
+### Testing Skills
+- ✅ API Testing with Playwright
+- ✅ UI Testing with Page Object Model
+- ✅ Hybrid Testing (API + UI)
+- ✅ Data-Driven Testing
+- ✅ Error Handling / Negative Testing
+- ✅ JSON Schema Validation
+
+### Technical Skills
+- ✅ TypeScript
+- ✅ Playwright Framework
+- ✅ CI/CD with GitHub Actions
+- ✅ Environment Configuration
+
+### Framework Design
+- ✅ Fluent Interface Pattern
+- ✅ Page Object Model (POM)
+- ✅ Custom Logger
+- ✅ Data Factory Pattern
+- ✅ State Management
+- ✅ Reusable Fixtures
+```
 
 ## 📝 License
 
