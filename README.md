@@ -118,7 +118,8 @@ Fullstack-SDET-Hybrid-Project/
 │   ├── api.spec.ts
 │   ├── data-driven.spec.ts
 │   ├── error-handling.spec.ts
-│   └── hybrid.spec.ts
+│   ├── hybrid.spec.ts
+│   └── performance.spec.ts
 │
 ├── 📂 schemas/
 │   ├── article.schema.json
