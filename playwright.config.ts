@@ -59,7 +59,7 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] }
     },
 
-    // Mobile Browsers (Optional)
+    // Mobile Browsers
     {
       name: 'mobile-chrome',
       testMatch: 'hybrid.spec.ts',
