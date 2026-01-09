@@ -174,9 +174,6 @@ npx playwright show-report
 | `npx playwright test` | Run all tests |
 | `npx playwright test --project=api-tests` | Run API tests only |
 | `npx playwright test --project=performance` | Run performance tests |
-| `npx playwright test --project=chromium` | Run on Chrome |
-| `npx playwright test --project=firefox` | Run on Firefox |
-| `npx playwright test --project=webkit` | Run on Safari |
 | `npx playwright test --grep "@smoke"` | Run smoke tests |
 | `npx playwright test --grep "@crud"` | Run CRUD tests |
 | `npx playwright test --grep "@negative"` | Run error handling tests |
