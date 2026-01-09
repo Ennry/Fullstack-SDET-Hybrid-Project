@@ -29,6 +29,7 @@ A professional **Hybrid UI + API** testing framework built with Playwright and T
 | | Error Handling | Negative Test Cases |
 | | Cross-Browser | Chrome, Firefox, Safari |
 | | Mobile Testing | Pixel 5, iPhone 12 |
+| | Performance Testing | Page Load & API Response |
 | **Design Patterns** | Fluent Interface | `apiHelper.ts` |
 | | Factory Pattern | `dataFactory.ts` |
 | | Page Object Model | `pages/*.ts` |
@@ -167,29 +168,32 @@ npx playwright show-report
 ```
 ## 📊 Test Commands
 
-```bash
-npx playwright test	- Run all tests
-npx playwright test --project=api-tests - Run API tests only
-npx playwright test --project=hybrid-tests - Run hybrid tests only
-npx playwright test --project=hybrid-tests --headed	- Run hybrid with browser visible
-npx playwright test --grep "@smoke" - Run smoke tests
-npx playwright test --grep "@crud" - Run CRUD tests
-npx playwright test --grep "@negative" - Run error handling tests
-npx playwright test --grep "@data-driven" - Run data-driven tests
-npx playwright test --grep "@hybrid" - Run hybrid tests
-npx playwright show-report - View HTML report
-```
+| Command | Description |
+|---------|-------------|
+| `npx playwright test` | Run all tests |
+| `npx playwright test --project=api-tests` | Run API tests only |
+| `npx playwright test --project=performance` | Run performance tests |
+| `npx playwright test --project=chromium` | Run on Chrome |
+| `npx playwright test --project=firefox` | Run on Firefox |
+| `npx playwright test --project=webkit` | Run on Safari |
+| `npx playwright test --grep "@smoke"` | Run smoke tests |
+| `npx playwright test --grep "@crud"` | Run CRUD tests |
+| `npx playwright test --grep "@negative"` | Run error handling tests |
+| `npx playwright test --grep "@hybrid"` | Run hybrid tests |
+| `npx playwright test --grep "@performance"` | Run performance tests |
+| `npx playwright show-report` | View HTML report |
 
 ## 🧪 Test Categories
 
-```bash
-@smoke - Quick health check GET endpoints
-@crud - Full lifecycle Create, Read, Update, Delete
-@negative - Error handling 401, 404, 422 responses
-@data-driven - Multiple variations Valid / invalid data
-@schema - Contract testing JSON Schema validation
-@hybrid - UI + API combined Fast, reliable tests
-```
+| Tag | Purpose | Tests |
+|-----|---------|-------|
+| `@smoke` | Quick health check | GET endpoints |
+| `@crud` | Full lifecycle | Create, Read, Update, Delete |
+| `@negative` | Error handling | 401, 404, 422 responses |
+| `@data-driven` | Multiple variations | Valid & invalid data |
+| `@schema` | Contract testing | JSON Schema validation |
+| `@hybrid` | UI + API combined | Fast, reliable tests |
+| `@performance` | Performance testing | Page load, API response times |
 
 ## 🌐 Cross-Browser Testing
 

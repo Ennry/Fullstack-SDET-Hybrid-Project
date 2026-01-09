@@ -36,6 +36,12 @@ export default defineConfig({
       testMatch: ['api.spec.ts', 'data-driven.spec.ts', 'error-handling.spec.ts']
     },
 
+    // Performance Tests
+    {
+      name: 'performance',
+      testMatch: 'performance.spec.ts'
+    },
+
     // Desktop Browsers
     {
       name: 'chromium',
