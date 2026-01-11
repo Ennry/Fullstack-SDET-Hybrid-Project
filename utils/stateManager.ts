@@ -3,12 +3,12 @@ class StateManager {
 
     set(key: string, value: any): void {
         this.state.set(key, value)
-        console.log(`📦 [STATE] Set: ${key} = ${JSON.stringify(value)}`)
+        console.log(`[STATE] Set: ${key} = ${JSON.stringify(value)}`)
     }
 
     get(key: string): any {
         const value = this.state.get(key)
-        console.log(`📦 [STATE] Get: ${key} = ${JSON.stringify(value)}`)
+        console.log(`[STATE] Get: ${key} = ${JSON.stringify(value)}`)
         return value
     }
 
@@ -18,7 +18,7 @@ class StateManager {
 
     clear(): void {
         this.state.clear()
-        console.log(`📦 [STATE] Cleared all state`)
+        console.log(`[STATE] Cleared all state`)
     }
 
     getAll(): Record<string, any> {

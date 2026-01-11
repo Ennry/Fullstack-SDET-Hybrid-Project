@@ -8,7 +8,7 @@ test.describe('Performance Tests @performance', () => {
         await page.goto('https://conduit.bondaracademy.com')
         await page.waitForLoadState('networkidle')
         await page.close()
-        console.log('✅ Warmup complete')
+        console.log('Warmup complete')
     })
 
     test('Home page loads under 5 seconds', async ({ page }) => {
@@ -17,7 +17,7 @@ test.describe('Performance Tests @performance', () => {
         await page.waitForLoadState('networkidle')
         const loadTime = Date.now() - start
 
-        console.log(`📊 Page load time: ${loadTime}ms`)
+        console.log(`Page load time: ${loadTime}ms`)
         expect(loadTime).toBeLessThan(5000)
     })
 
@@ -27,7 +27,7 @@ test.describe('Performance Tests @performance', () => {
         await page.waitForLoadState('networkidle')
         const loadTime = Date.now() - start
 
-        console.log(`📊 Login page load: ${loadTime}ms`)
+        console.log(`Login page load: ${loadTime}ms`)
         expect(loadTime).toBeLessThan(3000)
     })
 
@@ -36,7 +36,7 @@ test.describe('Performance Tests @performance', () => {
         await request.get('https://conduit-api.bondaracademy.com/api/articles')
         const responseTime = Date.now() - start
 
-        console.log(`📊 API response time: ${responseTime}ms`)
+        console.log(`API response time: ${responseTime}ms`)
         expect(responseTime).toBeLessThan(1000)
     })
 
@@ -45,7 +45,7 @@ test.describe('Performance Tests @performance', () => {
         await request.get('https://conduit-api.bondaracademy.com/api/tags')
         const responseTime = Date.now() - start
 
-        console.log(`📊 Tags API response: ${responseTime}ms`)
+        console.log(`Tags API response: ${responseTime}ms`)
         expect(responseTime).toBeLessThan(500)
     })
 
@@ -55,7 +55,7 @@ test.describe('Performance Tests @performance', () => {
         await page.waitForSelector('.article-preview')
         const renderTime = Date.now() - start
 
-        console.log(`📊 Articles render time: ${renderTime}ms`)
+        console.log(`Articles render time: ${renderTime}ms`)
         expect(renderTime).toBeLessThan(5000)
     })
 

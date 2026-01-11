@@ -1,18 +1,18 @@
 ![API Tests](https://github.com/Ennry/playwright-api-testing-framework/actions/workflows/ci.yml/badge.svg)
 
-# 🚀 Playwright Hybrid Testing Framework Made from Scratch by Ennry
+# Playwright Hybrid Testing Framework Made from Scratch by Ennry
 
 A professional **Hybrid UI + API** testing framework built with Playwright and TypeScript. Features Page Object Model (POM), Fluent API design, and seamless integration between API and UI testing layers.
 
 ---
 
-## 👤 Author
+## Author
 
 **Ennry** - [GitHub](https://github.com/Ennry)
 
 ---
 
-## ✨ Skills & Features
+## Skills & Features
 
 ![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=flat&logo=playwright&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
@@ -45,10 +45,10 @@ A professional **Hybrid UI + API** testing framework built with Playwright and T
 
 ```typescript
 // Automatic logging for all requests
-🔄 [REQUEST] 2026-01-08T10:30:45.123Z - POST /articles
-📦 Body: { "article": { "title": "Test" } }
-📥 [RESPONSE] 2026-01-08T10:30:45.456Z - Status: 201
-✅ [SUCCESS] Article created: test-article-123
+[REQUEST] 2026-01-08T10:30:45.123Z - POST /articles
+Body: { "article": { "title": "Test" } }
+[RESPONSE] 2026-01-08T10:30:45.456Z - Status: 201
+[SUCCESS] Article created: test-article-123
 ```
 
 ### Fluent API Helper Example
@@ -67,16 +67,16 @@ const article = dataFactory.article('CRUD')
 // Returns: { article: { title: "CRUD Article 1234567890", ... } }
 ```
 
-## 🔥 Hybrid Testing Approach
+## Hybrid Testing Approach
 
 ```text
-Traditional UI Test (Slow ❌):
+Traditional UI Test (Slow):
 ├── Login via UI (5 sec)
 ├── Create article via UI (10 sec)
 ├── Verify article (5 sec)
 └── Total: 20+ seconds
 
-Hybrid Test (Fast ✅):
+Hybrid Test (Fast):
 ├── API: Create article (1 sec)
 ├── UI: Verify display (3 sec)
 ├── API: Cleanup (1 sec)
@@ -87,22 +87,22 @@ Hybrid Test (Fast ✅):
 
 ```typescript
 test('Create via API, Verify in UI', async ({ authApi, authPage }) => {
-    // ⚡ API: Fast data creation
+    // API: Fast data creation
     const response = await authApi
         .path('/articles')
         .postRequest(201, dataFactory.article('Hybrid'))
 
-    // 🖥️ UI: Verify it displays correctly
+    // UI: Verify it displays correctly
     const articlePage = new ArticlePage(authPage)
     await articlePage.goto(response.article.slug)
     expect(await articlePage.getTitle()).toContain('Hybrid')
 
-    // ⚡ API: Fast cleanup
+    // API: Fast cleanup
     await authApi.path(`/articles/${slug}`).deleteRequest()
 })
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 Fullstack-SDET-Hybrid-Project/
@@ -146,7 +146,7 @@ Fullstack-SDET-Hybrid-Project/
 └── README.md
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # Clone the repository
@@ -167,7 +167,7 @@ npx playwright test
 # View report
 npx playwright show-report
 ```
-## 📊 Test Commands
+## Test Commands
 
 | Command | Description |
 |---------|-------------|
@@ -181,7 +181,7 @@ npx playwright show-report
 | `npx playwright test --grep "@performance"` | Run performance tests |
 | `npx playwright show-report` | View HTML report |
 
-## 🧪 Test Categories
+## Test Categories
 
 | Tag | Purpose | Tests |
 |-----|---------|-------|
@@ -193,7 +193,7 @@ npx playwright show-report
 | `@hybrid` | UI + API combined | Fast, reliable tests |
 | `@performance` | Performance testing | Page load, API response times |
 
-## 🌐 Cross-Browser Testing
+## Cross-Browser Testing
 
 | Browser | Command |
 |---------|---------|
@@ -204,7 +204,7 @@ npx playwright show-report
 | Mobile Safari | `npx playwright test --project=mobile-safari` |
 | All Browsers | `npx playwright test` |
 
-## 🔧 API Helper Usage
+## API Helper Usage
 
 ```TypeScript
 // Fluent syntax for API testing
@@ -221,7 +221,7 @@ const response = await authApi
 
 expect(response.article.slug).toBeDefined()
 ```
-## 🖥️ Page Object Model
+## Page Object Model
 
 ```TypeScript
 // Clean UI testing with POM
@@ -232,7 +232,7 @@ const title = await articlePage.getTitle()
 expect(title).toContain('My Article')
 ```
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 Create a .env file based on .env.example:
 
@@ -242,28 +242,28 @@ USER_EMAIL=your-email@example.com
 USER_PASSWORD=your-password
 ```
 
-## 📈 CI/CD Pipeline
+## CI/CD Pipeline
 
 Tests run automatically on:
 
-- ✅ Push to `main` branch
-- ✅ Pull requests to `main` branch
+- Push to `main` branch
+- Pull requests to `main` branch
 
 View results: [GitHub Actions](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions)
 
-## 📝 License & Credits
+## License & Credits
 
 ### Framework
 This test automation framework is created by **Ennry** from scratch as a personal portfolio project.
 
 You are welcome to:
-- ✅ View the code for learning purposes
-- ✅ Use concepts/patterns in your own projects
+- View the code for learning purposes
+- Use concepts/patterns in your own projects
 
 You are **NOT** allowed to:
-- ❌ Copy this repository directly
-- ❌ Use this project as your own portfolio work
-- ❌ Redistribute the code without permission
+- Copy this repository directly
+- Use this project as your own portfolio work
+- Redistribute the code without permission
 
 ### API Credit
 The API used for testing is provided by **[Bondar Academy](https://www.bondaracademy.com)**.

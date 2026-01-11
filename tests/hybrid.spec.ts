@@ -12,7 +12,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             .postRequest(201, dataFactory.article('Hybrid'))
 
         const slug = response.article.slug
-        console.log('✅ API: Article created:', slug)
+        console.log('API: Article created:', slug)
 
         // UI: Verify article
         const articlePage = new ArticlePage(authPage)
@@ -20,11 +20,11 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
 
         const title = await articlePage.getTitle()
         expect(title).toContain('Hybrid')
-        console.log('✅ UI: Article verified')
+        console.log('UI: Article verified')
 
         // API: Cleanup
         await authApi.path(`/articles/${slug}`).deleteRequest()
-        console.log('✅ API: Cleanup done')
+        console.log('API: Cleanup done')
     })
 
     test('Create article via UI, verify via API', async ({ authApi, authPage }) => {
@@ -43,7 +43,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
         )
 
         const slug = await editorPage.getSlugFromUrl()
-        console.log('✅ UI: Article created:', slug)
+        console.log('UI: Article created:', slug)
 
         // API: Verify article
         const response = await authApi
@@ -51,11 +51,11 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             .getRequest()
 
         expect(response.article.title).toBe(uniqueTitle)
-        console.log('✅ API: Article verified')
+        console.log('API: Article verified')
 
         // API: Cleanup
         await authApi.path(`/articles/${slug}`).deleteRequest()
-        console.log('✅ API: Cleanup done')
+        console.log('API: Cleanup done')
     })
 
     test('Delete via API, verify gone in UI', async ({ authApi, authPage }) => {
@@ -65,11 +65,11 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             .postRequest(201, dataFactory.article('ToDelete'))
 
         const slug = response.article.slug
-        console.log('✅ API: Article created:', slug)
+        console.log('API: Article created:', slug)
 
         // API: Delete article
         await authApi.path(`/articles/${slug}`).deleteRequest()
-        console.log('✅ API: Article deleted')
+        console.log('API: Article deleted')
 
         // UI: Verify gone
         const articlePage = new ArticlePage(authPage)
@@ -77,14 +77,14 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
 
         const isVisible = await articlePage.isArticleVisible()
         expect(isVisible).toBe(false)
-        console.log('✅ UI: Confirmed article gone')
+        console.log('UI: Confirmed article gone')
     })
 
     test('Verify tags sync between API and UI', async ({ api, page }) => {
         // API: Get tags
         const apiResponse = await api.path('/tags').getRequest()
         const apiTags = apiResponse.tags
-        console.log('✅ API: Got', apiTags.length, 'tags')
+        console.log('API: Got', apiTags.length, 'tags')
 
         // UI: Get tags (wait for load)
         const homePage = new HomePage(page)
@@ -94,7 +94,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
         await page.waitForSelector('.tag-list', { timeout: 10000 })
 
         const uiTags = await homePage.getTags()
-        console.log('✅ UI: Got', uiTags.length, 'tags')
+        console.log('UI: Got', uiTags.length, 'tags')
         console.log('UI Tags:', uiTags)
 
         // Verify tags exist
@@ -103,7 +103,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
         // Verify some tags exist in both
         const commonTag = apiTags[0]
         expect(uiTags).toContain(commonTag)
-        console.log('✅ Verified tag sync:', commonTag)
+        console.log('Verified tag sync:', commonTag)
     })
 
 })
