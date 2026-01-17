@@ -291,21 +291,13 @@ View results: [GitHub Actions](https://github.com/Ennry/Fullstack-SDET-Hybrid-Pr
 
 ## License & Credits
 
-### Framework
-This test automation framework is created by **Ennry** from scratch as a personal portfolio project.
-
-You are welcome to:
-- View the code for learning purposes
-- Use concepts/patterns in your own projects
-
-You are **NOT** allowed to:
-- Copy this repository directly
-- Use this project as your own portfolio work
-- Redistribute the code without permission
+### License
+This project is **proprietary** created by **Ennry** from scratch as a personal portfolio project.
+See [LICENSE](LICENSE) for details.
 
 ### API Credit
 The API used for testing is provided by **[Bondar Academy](https://www.bondaracademy.com)**.
-- API URL: `https://conduit-api.bondaracademy.com/api`
-- UI URL: `https://conduit.bondaracademy.com`
+- API: `https://conduit-api.bondaracademy.com/api`
+- UI: `https://conduit.bondaracademy.com`
 
 This project is for educational purposes and is not affiliated with Bondar Academy.
