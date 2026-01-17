@@ -43,12 +43,6 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
 
 ---
 
-## Author
-
-**Ennry** - [GitHub](https://github.com/Ennry)
-
----
-
 ## Skills & Features
 
 ![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=flat&logo=playwright&logoColor=white)
