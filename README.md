@@ -159,7 +159,8 @@ cd Fullstack-SDET-Hybrid-Project
 npm install
 
 # Setup environment
-cp .env.example .env (Sign up and replace .env credentials from "https://conduit.bondaracademy.com/")
+cp .env.example .env
+# then edit .env with your credentials from https://conduit.bondaracademy.com
 
 # Run all tests
 npx playwright test
