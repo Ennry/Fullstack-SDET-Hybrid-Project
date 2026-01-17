@@ -1,8 +1,45 @@
-![API Tests](https://github.com/Ennry/playwright-api-testing-framework/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions/workflows/ci.yml/badge.svg)](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions/workflows/ci.yml)
 
-# Playwright Hybrid Testing Framework Made from Scratch by Ennry
+## Architecture
 
-A professional **Hybrid UI + API** testing framework built with Playwright and TypeScript. Features Page Object Model (POM), Fluent API design, and seamless integration between API and UI testing layers.
+This framework is built as a **hybrid UI + API** test solution using Playwright + TypeScript.
+
+### Key Layers
+
+- **Tests (`tests/*.spec.ts`)**
+  - Contains test scenarios only (assertions + orchestration).
+  - Uses fixtures for authenticated UI and API contexts.
+
+- **Page Objects (`pages/*.ts`)**
+  - Encapsulates UI selectors and UI actions.
+  - Keeps tests readable and reduces duplication.
+
+- **API Layer (`utils/apiHelper.ts`)**
+  - Fluent helper for HTTP requests (`GET/POST/PUT/DELETE`).
+  - Handles base URL, headers (auth token), logging, and expected status checks.
+
+- **Test Data (`utils/dataFactory.ts`)**
+  - Generates unique and reusable payloads for API/UI (e.g., articles).
+
+- **Fixtures (`utils/fixtures.ts`)**
+  - Central place for Playwright test fixtures.
+  - Provides:
+    - `authApi`: authenticated API client (token attached)
+    - `authPage`: authenticated browser page (storage state/cookies)
+
+- **State Management (`utils/stateManager.ts`)**
+  - Stores data created during tests (e.g., `slug`, `articleId`) to share across steps.
+  - Supports cleanup and avoids global variables.
+
+- **Contract Testing (`schemas/*.json` + `utils/schemaValidator.ts`)**
+  - Validates API responses against JSON Schemas (AJV).
+  - Ensures response structure is correct, not only status codes.
+
+### Hybrid Test Flow (API → UI → API)
+
+1. **API creates data** quickly (e.g., create an article)
+2. **UI verifies** the data is displayed correctly
+3. **API cleans up** (delete the article) to keep tests isolated
 
 ---
 
