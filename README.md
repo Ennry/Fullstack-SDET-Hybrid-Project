@@ -1,5 +1,7 @@
 [![CI](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions/workflows/ci.yml/badge.svg)](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions/workflows/ci.yml)
 
+# Playwright Hybrid Testing Framework Made from Scratch by **Ennry** — [GitHub](https://github.com/Ennry)
+
 ## Architecture
 
 This framework is built as a **hybrid UI + API** test solution using Playwright + TypeScript.
