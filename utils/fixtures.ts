@@ -26,7 +26,6 @@ export const test = base.extend<Fixtures>({
         await use(api)
     },
 
-    // Shared auth token — login happens ONCE per test
     authToken: async ({ request }, use) => {
         const loginResponse = await request.post(`${config.baseUrl}/users/login`, {
             data: {
@@ -52,26 +51,21 @@ export const test = base.extend<Fixtures>({
     },
 
     authPage: async ({ page, authToken }, use) => {
-        // Go to site first
         await page.goto(config.uiBaseUrl)
 
-        // Set token in localStorage
         await page.evaluate((token) => {
             localStorage.setItem('jwtToken', token)
         }, authToken)
 
-        // Reload and wait for login to apply
         await page.reload()
         await page.waitForLoadState('networkidle')
-
-        // Verify logged in
         await page.waitForSelector('a[href="/editor"]', { timeout: 10000 })
 
         await use(page)
     },
 
-    // Each test gets its own state manager — safe for parallel
-    stateManager: async ({ }, use) => {
+    // eslint-disable-next-line no-empty-pattern
+    stateManager: async ({}, use) => {
         const state = new StateManager()
         await use(state)
         state.clear()

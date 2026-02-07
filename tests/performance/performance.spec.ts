@@ -16,7 +16,7 @@ test.describe('Performance Tests @performance', () => {
         await page.waitForLoadState('load')
 
         const perfTiming = await page.evaluate(() => {
-            const timing = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+            const timing = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
             return {
                 domContentLoaded: Math.round(timing.domContentLoadedEventEnd - timing.startTime),
                 fullLoad: Math.round(timing.loadEventEnd - timing.startTime),
@@ -36,7 +36,7 @@ test.describe('Performance Tests @performance', () => {
         await page.waitForLoadState('load')
 
         const perfTiming = await page.evaluate(() => {
-            const timing = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+            const timing = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
             return {
                 fullLoad: Math.round(timing.loadEventEnd - timing.startTime)
             }

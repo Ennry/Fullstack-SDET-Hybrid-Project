@@ -1,15 +1,15 @@
 export class StateManager {
-    private state: Map<string, any> = new Map()
+    private state: Map<string, unknown> = new Map()
 
-    set(key: string, value: any): void {
+    set(key: string, value: unknown): void {
         this.state.set(key, value)
         console.log(`[STATE] Set: ${key} = ${JSON.stringify(value)}`)
     }
 
-    get(key: string): any {
+    get<T = unknown>(key: string): T {
         const value = this.state.get(key)
         console.log(`[STATE] Get: ${key} = ${JSON.stringify(value)}`)
-        return value
+        return value as T
     }
 
     has(key: string): boolean {
@@ -21,12 +21,11 @@ export class StateManager {
         console.log(`[STATE] Cleared all state`)
     }
 
-    getAll(): Record<string, any> {
+    getAll(): Record<string, unknown> {
         return Object.fromEntries(this.state)
     }
 }
 
-// Factory function instead of singleton — each test gets its own instance
 export function createStateManager(): StateManager {
     return new StateManager()
 }

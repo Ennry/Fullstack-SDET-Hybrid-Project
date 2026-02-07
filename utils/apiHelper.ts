@@ -1,7 +1,6 @@
-import { APIRequestContext } from '@playwright/test'
+import { APIRequestContext, APIResponse } from '@playwright/test'
 import { logger } from './logger'
 
-// Response type interfaces
 export interface ArticleResponse {
     article: {
         slug: string
@@ -52,9 +51,6 @@ export class ApiHelper {
         return `${this.baseUrl}${this.endpoint}`
     }
 
-    /**
-     * Configure retry behavior for flaky requests
-     */
     withRetry(count: number, delayMs: number = 1000): this {
         this.retryCount = count
         this.retryDelay = delayMs
@@ -82,11 +78,10 @@ export class ApiHelper {
         throw lastError
     }
 
-    private async handleResponse<T>(response: any, expectedStatus: number): Promise<T> {
+    private async handleResponse<T>(response: APIResponse, expectedStatus: number): Promise<T> {
         const url = this.buildUrl()
         const status = response.status()
 
-        // Reset endpoint after use to prevent stale state
         this.endpoint = ''
 
         if (status !== expectedStatus) {
@@ -119,7 +114,7 @@ export class ApiHelper {
         return this
     }
 
-    async getRequest<T = any>(expectedStatus: number = 200): Promise<T> {
+    async getRequest<T = unknown>(expectedStatus: number = 200): Promise<T> {
         const url = this.buildUrl()
         return this.executeWithRetry(async () => {
             logger.request('GET', url)
@@ -130,7 +125,7 @@ export class ApiHelper {
         }, `GET ${url}`)
     }
 
-    async postRequest<T = any>(expectedStatus: number = 201, body: object): Promise<T> {
+    async postRequest<T = unknown>(expectedStatus: number = 201, body: object): Promise<T> {
         const url = this.buildUrl()
         return this.executeWithRetry(async () => {
             logger.request('POST', url, body)
@@ -142,7 +137,7 @@ export class ApiHelper {
         }, `POST ${url}`)
     }
 
-    async putRequest<T = any>(expectedStatus: number = 200, body: object): Promise<T> {
+    async putRequest<T = unknown>(expectedStatus: number = 200, body: object): Promise<T> {
         const url = this.buildUrl()
         return this.executeWithRetry(async () => {
             logger.request('PUT', url, body)
@@ -154,7 +149,7 @@ export class ApiHelper {
         }, `PUT ${url}`)
     }
 
-    async patchRequest<T = any>(expectedStatus: number = 200, body: object): Promise<T> {
+    async patchRequest<T = unknown>(expectedStatus: number = 200, body: object): Promise<T> {
         const url = this.buildUrl()
         return this.executeWithRetry(async () => {
             logger.request('PATCH', url, body)
@@ -166,7 +161,7 @@ export class ApiHelper {
         }, `PATCH ${url}`)
     }
 
-    async deleteRequest<T = any>(expectedStatus: number = 204): Promise<T> {
+    async deleteRequest<T = unknown>(expectedStatus: number = 204): Promise<T> {
         const url = this.buildUrl()
         return this.executeWithRetry(async () => {
             logger.request('DELETE', url)
