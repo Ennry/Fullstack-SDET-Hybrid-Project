@@ -53,13 +53,7 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
     - Multi-environment support (staging, production, local).
     - Environment selection via `TEST_ENV` variable.
 
-- **Global Setup (`utils/globalSetup.ts`)**
-    - Pre-test health checks (API reachability, credential verification).
-    - Automatic cleanup of leftover test data from previous runs.
-
-- **Custom Reporter (`utils/customReporter.ts`)**
-    - Real-time test execution logging with pass/fail indicators.
-    - Summary with pass rate, duration, and failed test details.
+---
 
 ### Hybrid Test Flow (API → UI → API)
 
