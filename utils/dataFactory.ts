@@ -8,6 +8,15 @@ export const dataFactory = {
         }
     }),
 
+    updateArticle: (prefix: string = 'Updated') => ({
+        article: {
+            title: `${prefix} Article ${Date.now()}`,
+            description: `${prefix} description`,
+            body: `${prefix} body content`,
+            tagList: [`${prefix.toLowerCase()}-tag`]
+        }
+    }),
+
     invalidArticle: () => ({
         article: {
             title: '',

@@ -1,8 +1,9 @@
 import { Page } from '@playwright/test'
+import { config } from '../utils/config'
 
 export class BasePage {
     protected page: Page
-    protected baseUrl = 'https://conduit.bondaracademy.com'
+    protected baseUrl = config.uiBaseUrl
 
     constructor(page: Page) {
         this.page = page
@@ -14,5 +15,9 @@ export class BasePage {
 
     async waitForPageLoad() {
         await this.page.waitForLoadState('networkidle')
+    }
+
+    async getTitle() {
+        return await this.page.title()
     }
 }

@@ -4,9 +4,9 @@ import { defineConfig, devices } from '@playwright/test';
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -20,7 +20,8 @@ export default defineConfig({
 
   reporter: [
     ['list'],
-    ['html', { outputFolder: 'playwright-report' }]
+    ['html', { outputFolder: 'playwright-report' }],
+    ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
 
   use: {
@@ -33,41 +34,48 @@ export default defineConfig({
     // API Tests
     {
       name: 'api-tests',
-      testMatch: ['api.spec.ts', 'data-driven.spec.ts', 'error-handling.spec.ts']
+      testDir: './tests/api',
+      testMatch: ['*.spec.ts']
     },
 
     // Performance Tests
     {
       name: 'performance',
-      testMatch: 'performance.spec.ts'
+      testDir: './tests/performance',
+      testMatch: '*.spec.ts'
     },
 
     // Desktop Browsers
     {
       name: 'chromium',
-      testMatch: 'hybrid.spec.ts',
+      testDir: './tests/hybrid',
+      testMatch: '*.spec.ts',
       use: { ...devices['Desktop Chrome'] }
     },
     {
       name: 'firefox',
-      testMatch: 'hybrid.spec.ts',
+      testDir: './tests/hybrid',
+      testMatch: '*.spec.ts',
       use: { ...devices['Desktop Firefox'] }
     },
     {
       name: 'webkit',
-      testMatch: 'hybrid.spec.ts',
+      testDir: './tests/hybrid',
+      testMatch: '*.spec.ts',
       use: { ...devices['Desktop Safari'] }
     },
 
     // Mobile Browsers
     {
       name: 'mobile-chrome',
-      testMatch: 'hybrid.spec.ts',
+      testDir: './tests/hybrid',
+      testMatch: '*.spec.ts',
       use: { ...devices['Pixel 5'] }
     },
     {
       name: 'mobile-safari',
-      testMatch: 'hybrid.spec.ts',
+      testDir: './tests/hybrid',
+      testMatch: '*.spec.ts',
       use: { ...devices['iPhone 12'] }
     }
   ]

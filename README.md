@@ -11,37 +11,62 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
 - **Tests (`tests/*.spec.ts`)**
   - Contains test scenarios only (assertions + orchestration).
   - Uses fixtures for authenticated UI and API contexts.
+  - Includes `try/finally` cleanup to prevent orphaned test data.
 
 - **Page Objects (`pages/*.ts`)**
-  - Encapsulates UI selectors and UI actions.
+  - Encapsulates UI selectors and UI actions using modern **Locator-based API**.
+  - Uses getter pattern for lazy locator initialization.
   - Keeps tests readable and reduces duplication.
 
 - **API Layer (`utils/apiHelper.ts`)**
   - Fluent helper for HTTP requests (`GET/POST/PUT/DELETE`).
+  - Built-in **retry mechanism** for flaky requests.
+  - **Generic return types** for type-safe responses.
+  - Auto-resets endpoint path after each request to prevent stale state.
   - Handles base URL, headers (auth token), logging, and expected status checks.
 
 - **Test Data (`utils/dataFactory.ts`)**
   - Generates unique and reusable payloads for API/UI (e.g., articles).
+  - Separate factories for create and update operations.
 
 - **Fixtures (`utils/fixtures.ts`)**
   - Central place for Playwright test fixtures.
   - Provides:
+    - `authToken`: shared authentication token (single login per test)
     - `authApi`: authenticated API client (token attached)
-    - `authPage`: authenticated browser page (storage state/cookies)
+    - `authPage`: authenticated browser page (localStorage injection)
+    - `stateManager`: test-scoped state (safe for parallel execution)
 
 - **State Management (`utils/stateManager.ts`)**
+  - Factory-based instantiation — each test gets its own instance.
   - Stores data created during tests (e.g., `slug`, `articleId`) to share across steps.
   - Supports cleanup and avoids global variables.
 
 - **Contract Testing (`schemas/*.json` + `utils/schemaValidator.ts`)**
   - Validates API responses against JSON Schemas (AJV).
+  - **Schema caching** to avoid recompilation overhead.
+  - Validates both single article and article list item structures.
   - Ensures response structure is correct, not only status codes.
+
+- **Configuration (`utils/config.ts` + `utils/environments.ts`)**
+  - **Fail-fast validation** for required environment variables.
+  - Multi-environment support (staging, production, local).
+  - Environment selection via `TEST_ENV` variable.
+
+- **Global Setup (`utils/globalSetup.ts`)**
+  - Pre-test health checks (API reachability, credential verification).
+  - Automatic cleanup of leftover test data from previous runs.
+
+- **Custom Reporter (`utils/customReporter.ts`)**
+  - Real-time test execution logging with pass/fail indicators.
+  - Summary with pass rate, duration, and failed test details.
 
 ### Hybrid Test Flow (API → UI → API)
 
 1. **API creates data** quickly (e.g., create an article)
 2. **UI verifies** the data is displayed correctly
 3. **API cleans up** (delete the article) to keep tests isolated
+4. **`try/finally`** ensures cleanup runs even on test failure
 
 ---
 
@@ -51,27 +76,36 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=github-actions&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
+![k6](https://img.shields.io/badge/k6-7D64FF?style=flat&logo=k6&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white)
 
 | Category | Skill | Implementation |
 |----------|-------|----------------|
-| **Testing** | API Testing | Fluent API Helper |
-| | UI Testing | Page Object Model |
+| **Testing** | API Testing | Fluent API Helper with retry & generics |
+| | UI Testing | Page Object Model (Locator API) |
 | | Hybrid Testing | API + UI Combined |
-| | Contract Testing | JSON Schema / AJV |
+| | Contract Testing | JSON Schema / AJV with caching |
 | | Data-Driven | Parameterized Tests |
-| | Error Handling | Negative Test Cases |
+| | Error Handling | Negative Test Cases (401, 404, 422) |
 | | Cross-Browser | Chrome, Firefox, Safari |
 | | Mobile Testing | Pixel 5, iPhone 12 |
-| | Performance Testing | Page Load & API Response |
+| | Performance Testing | Page Load & API Response (Performance API) |
+| | Load Testing | k6 Scripts with staged load |
 | **Design Patterns** | Fluent Interface | `apiHelper.ts` |
 | | Factory Pattern | `dataFactory.ts` |
 | | Page Object Model | `pages/*.ts` |
+| | Builder Pattern | API chaining `.path().getRequest()` |
+| | Singleton Guard | Factory-based state management |
 | **Utilities** | Custom Logger | Request/Response Logging |
-| | Config Manager | Environment Variables |
-| | State Manager | Shared Test State |
-| | Test Fixtures | Auto-Authentication |
-| **DevOps** | CI/CD | GitHub Actions |
-| | Reporting | Playwright HTML Reports |
+| | Custom Reporter | Real-time execution summary |
+| | Config Manager | Multi-env with fail-fast validation |
+| | State Manager | Test-scoped (parallel-safe) |
+| | Global Setup | Health checks & data cleanup |
+| | Schema Cache | Compiled schema reuse |
+| **DevOps** | CI/CD | GitHub Actions (multi-browser matrix) |
+| | Reporting | Playwright HTML + Allure |
+| | Artifact Upload | Test reports per browser |
+
 ---
 
 ### Custom Logger Example
@@ -87,17 +121,47 @@ Body: { "article": { "title": "Test" } }
 ### Fluent API Helper Example
 
 ```typescript
-// Clean, chainable syntax
+// Clean, chainable syntax with retry support
 const response = await authApi
     .path('/articles')
-    .postRequest(201, dataFactory.article('Test'))
+    .withRetry(3, 1000)
+    .postRequest<ArticleResponse>(201, dataFactory.article('Test'))
+
+// response.article.slug has full autocomplete
 ```
 
 ### Data Factory Example
 ```typescript
-// Reusable test data
+// Reusable test data with unique timestamps
 const article = dataFactory.article('CRUD')
-// Returns: { article: { title: "CRUD Article 1234567890", ... } }
+// Returns: { article: { title: "CRUD Article 1704700000000", ... } }
+
+const update = dataFactory.updateArticle('Updated')
+// Returns: { article: { title: "Updated Article 1704700000001", ... } }
+```
+
+### Guaranteed Cleanup Example
+
+```typescript
+// Tests always clean up, even on failure
+test('Create and verify', async ({ authApi, authPage }) => {
+    let slug: string | undefined
+
+    try {
+        const response = await authApi
+            .path('/articles')
+            .postRequest(201, dataFactory.article('Test'))
+        slug = response.article.slug
+        if (!slug) throw new Error('No slug returned')
+
+        // Test assertions here...
+
+    } finally {
+        if (slug) {
+            await authApi.path(`/articles/${slug}`).deleteRequest()
+        }
+    }
+})
 ```
 
 ## Hybrid Testing Approach
@@ -113,25 +177,34 @@ Hybrid Test (Fast):
 ├── API: Create article (1 sec)
 ├── UI: Verify display (3 sec)
 ├── API: Cleanup (1 sec)
-└── Total: 5 seconds
+└── Total: 5 seconds (4x faster)
 ```
 
 ### Example Hybrid Test
 
 ```typescript
 test('Create via API, Verify in UI', async ({ authApi, authPage }) => {
-    // API: Fast data creation
-    const response = await authApi
-        .path('/articles')
-        .postRequest(201, dataFactory.article('Hybrid'))
+    let slug: string | undefined
 
-    // UI: Verify it displays correctly
-    const articlePage = new ArticlePage(authPage)
-    await articlePage.goto(response.article.slug)
-    expect(await articlePage.getTitle()).toContain('Hybrid')
+    try {
+        // API: Fast data creation
+        const response = await authApi
+            .path('/articles')
+            .postRequest(201, dataFactory.article('Hybrid'))
+        slug = response.article.slug
+        if (!slug) throw new Error('No slug returned')
 
-    // API: Fast cleanup
-    await authApi.path(`/articles/${slug}`).deleteRequest()
+        // UI: Verify it displays correctly
+        const articlePage = new ArticlePage(authPage)
+        await articlePage.goto(slug)
+        expect(await articlePage.getTitle()).toContain('Hybrid')
+
+    } finally {
+        // API: Fast cleanup (always runs)
+        if (slug) {
+            await authApi.path(`/articles/${slug}`).deleteRequest()
+        }
+    }
 })
 ```
 
@@ -140,39 +213,54 @@ test('Create via API, Verify in UI', async ({ authApi, authPage }) => {
 ```text
 Fullstack-SDET-Hybrid-Project/
 │
+├── 📂 .github/workflows/
+│   └── ci.yml                    # CI/CD pipeline (lint → smoke → api/ui → hybrid → allure)
+│
 ├── 📂 pages/
-│   ├── BasePage.ts
-│   ├── LoginPage.ts
-│   ├── HomePage.ts
-│   ├── ArticlePage.ts
-│   └── EditorPage.ts
+│   ├── BasePage.ts               # Base class with navigation
+│   ├── LoginPage.ts              # Login form interactions
+│   ├── HomePage.ts               # Article feed & tags
+│   ├── ArticlePage.ts            # Article view & delete
+│   └── EditorPage.ts             # Article creation form
 │
 ├── 📂 tests/
-│   ├── api.spec.ts
-│   ├── data-driven.spec.ts
-│   ├── error-handling.spec.ts
-│   ├── hybrid.spec.ts
-│   └── performance.spec.ts
+│   ├── 📂 api/
+│   │   ├── api.spec.ts           # CRUD lifecycle + schema validation
+│   │   ├── data-driven.spec.ts   # Parameterized positive & negative
+│   │   └── error-handling.spec.ts # 401, 404, 422 scenarios
+│   ├── 📂 hybrid/
+│   │   └── hybrid.spec.ts        # API ↔ UI cross-layer verification
+│   ├── 📂 ui/
+│   │   └── login.spec.ts         # Login flows & error states
+│   └── 📂 performance/
+│       └── performance.spec.ts   # Page load & API benchmarks
+│
+├── 📂 load-tests/
+│   └── articles-load.js          # k6 staged load test
 │
 ├── 📂 schemas/
-│   ├── article.schema.json
-│   ├── articles.schema.json
-│   └── tags.schema.json
+│   ├── article.schema.json       # Single article schema
+│   ├── articles.schema.json      # Article list schema (with item validation)
+│   └── tags.schema.json          # Tags endpoint schema
 │
 ├── 📂 utils/
-│   ├── apiHelper.ts
-│   ├── fixtures.ts
-│   ├── schemaValidator.ts
-│   ├── dataFactory.ts
-│   ├── stateManager.ts
-│   ├── logger.ts
-│   └── config.ts
-│
-├── 📂 .github/workflows/
-│   └── ci.yml
+│   ├── apiHelper.ts              # Fluent API client (retry, generics, auto-reset)
+│   ├── fixtures.ts               # Playwright fixtures (shared auth token)
+│   ├── schemaValidator.ts        # JSON Schema validation (with caching)
+│   ├── dataFactory.ts            # Test data generators
+│   ├── stateManager.ts           # Test-scoped state (parallel-safe)
+│   ├── logger.ts                 # Structured request/response logging
+│   ├── config.ts                 # Config with fail-fast env validation
+│   ├── environments.ts           # Multi-environment definitions
+│   ├── customReporter.ts         # Custom test execution reporter
+│   ├── performanceHelper.ts      # Performance timing utility
+│   ├── globalSetup.ts            # Health checks & data cleanup
+│   └── globalTeardown.ts         # Post-run teardown
 │
 ├── .env.example
 ├── .gitignore
+├── .prettierrc
+├── eslint.config.mjs
 ├── playwright.config.ts
 ├── tsconfig.json
 ├── package.json
@@ -190,6 +278,9 @@ cd Fullstack-SDET-Hybrid-Project
 
 # Install dependencies
 npm install
+
+# Install Playwright browsers
+npx playwright install --with-deps
 
 # Setup environment
 cp .env.example .env
@@ -214,6 +305,18 @@ npx playwright show-report
 | `npx playwright test --grep "@hybrid"` | Run hybrid tests |
 | `npx playwright test --grep "@performance"` | Run performance tests |
 | `npx playwright show-report` | View HTML report |
+| `k6 run load-tests/articles-load.js` | Run k6 load test |
+
+## Multi-Environment Support
+
+# Staging (default)
+npx playwright test
+
+# Production
+TEST_ENV=prod npx playwright test
+
+# Local development
+TEST_ENV=local npx playwright test
 
 ## Test Categories
 
@@ -241,10 +344,11 @@ npx playwright show-report
 ## API Helper Usage
 
 ```TypeScript
-// Fluent syntax for API testing
+// Fluent syntax with generics and retry
 const response = await authApi
     .path('/articles')
-    .postRequest(201, {
+    .withRetry(3, 1000)
+    .postRequest<ArticleResponse>(201, {
         article: {
             title: 'Test Article',
             description: 'Test description',
@@ -258,12 +362,20 @@ expect(response.article.slug).toBeDefined()
 ## Page Object Model
 
 ```TypeScript
-// Clean UI testing with POM
+// Modern Locator-based Page Objects
+export class ArticlePage extends BasePage {
+    private get articleTitle() { return this.page.locator('h1') }
+    private get deleteButton() { return this.page.locator('button:has-text("Delete Article")') }
+
+    async getTitle() {
+        return await this.articleTitle.textContent()
+    }
+}
+
+// Clean test usage
 const articlePage = new ArticlePage(page)
 await articlePage.goto(slug)
-
-const title = await articlePage.getTitle()
-expect(title).toContain('My Article')
+expect(await articlePage.getTitle()).toContain('My Article')
 ```
 
 ## Environment Variables
@@ -272,8 +384,10 @@ Create a .env file based on .env.example:
 
 ```env
 API_BASE_URL=https://conduit-api.bondaracademy.com/api
+UI_BASE_URL=https://conduit.bondaracademy.com
 USER_EMAIL=your-email@example.com
 USER_PASSWORD=your-password
+TEST_ENV=staging
 ```
 
 ## CI/CD Pipeline
@@ -282,6 +396,19 @@ Tests run automatically on:
 
 - Push to `main` branch
 - Pull requests to `main` branch
+- Manual trigger with test type selection
+
+## Pipeline Flow
+
+Lint & Format Check
+        ↓
+   Smoke Tests
+     ↓     ↓
+API Tests  UI Tests (Chrome, Firefox, Safari)
+     ↓     ↓
+  Hybrid Tests
+        ↓
+  Allure Report
 
 View results: [GitHub Actions](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions)
 

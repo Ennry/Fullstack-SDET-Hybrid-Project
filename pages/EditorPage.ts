@@ -2,12 +2,12 @@ import { Page } from '@playwright/test'
 import { BasePage } from './BasePage'
 
 export class EditorPage extends BasePage {
-    
-    private titleInput = '[placeholder="Article Title"]'
-    private descriptionInput = '[placeholder="What\'s this article about?"]'
-    private bodyInput = '[placeholder="Write your article (in markdown)"]'
-    private tagsInput = '[placeholder="Enter tags"]'
-    private publishButton = 'button:has-text("Publish")'
+
+    private get titleInput() { return this.page.locator('[placeholder="Article Title"]') }
+    private get descriptionInput() { return this.page.locator('[placeholder="What\'s this article about?"]') }
+    private get bodyInput() { return this.page.locator('[placeholder="Write your article (in markdown)"]') }
+    private get tagsInput() { return this.page.locator('[placeholder="Enter tags"]') }
+    private get publishButton() { return this.page.locator('button:has-text("Publish")') }
 
     constructor(page: Page) {
         super(page)
@@ -18,16 +18,16 @@ export class EditorPage extends BasePage {
     }
 
     async createArticle(title: string, description: string, body: string, tags: string[] = []) {
-        await this.page.fill(this.titleInput, title)
-        await this.page.fill(this.descriptionInput, description)
-        await this.page.fill(this.bodyInput, body)
+        await this.titleInput.fill(title)
+        await this.descriptionInput.fill(description)
+        await this.bodyInput.fill(body)
 
         for (const tag of tags) {
-            await this.page.fill(this.tagsInput, tag)
-            await this.page.press(this.tagsInput, 'Enter')
+            await this.tagsInput.fill(tag)
+            await this.tagsInput.press('Enter')
         }
 
-        await this.page.click(this.publishButton)
+        await this.publishButton.click()
     }
 
     async getSlugFromUrl() {

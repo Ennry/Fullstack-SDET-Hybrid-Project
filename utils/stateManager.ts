@@ -1,4 +1,4 @@
-class StateManager {
+export class StateManager {
     private state: Map<string, any> = new Map()
 
     set(key: string, value: any): void {
@@ -26,4 +26,7 @@ class StateManager {
     }
 }
 
-export const stateManager = new StateManager()
+// Factory function instead of singleton — each test gets its own instance
+export function createStateManager(): StateManager {
+    return new StateManager()
+}

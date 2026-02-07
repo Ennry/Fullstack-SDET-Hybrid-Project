@@ -18,7 +18,7 @@ export const logger = {
     },
 
     error: (message: string): void => {
-        console.log(formatMessage('ERROR', message))
+        console.error(formatMessage('ERROR', message))
     },
 
     request: (method: string, url: string, body?: object): void => {

@@ -1,4 +1,4 @@
-import { test, expect } from '../utils/fixtures'
+import { test, expect } from '../../utils/fixtures'
 
 test.describe('Error Handling @negative', () => {
 

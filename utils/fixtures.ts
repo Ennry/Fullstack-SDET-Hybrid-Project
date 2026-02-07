@@ -1,6 +1,7 @@
 import { test as base, Page } from '@playwright/test'
 import { ApiHelper } from './apiHelper'
 import { config } from './config'
+import { StateManager } from './stateManager'
 import { LoginPage } from '../pages/LoginPage'
 import { ArticlePage } from '../pages/ArticlePage'
 import { EditorPage } from '../pages/EditorPage'
@@ -8,12 +9,14 @@ import { HomePage } from '../pages/HomePage'
 
 type Fixtures = {
     api: ApiHelper
+    authToken: string
     authApi: ApiHelper
     loginPage: LoginPage
     articlePage: ArticlePage
     editorPage: EditorPage
     homePage: HomePage
     authPage: Page
+    stateManager: StateManager
 }
 
 export const test = base.extend<Fixtures>({
@@ -23,9 +26,8 @@ export const test = base.extend<Fixtures>({
         await use(api)
     },
 
-    authApi: async ({ request }, use) => {
-        const api = new ApiHelper(request, config.baseUrl)
-
+    // Shared auth token — login happens ONCE per test
+    authToken: async ({ request }, use) => {
         const loginResponse = await request.post(`${config.baseUrl}/users/login`, {
             data: {
                 user: {
@@ -40,42 +42,39 @@ export const test = base.extend<Fixtures>({
         }
 
         const loginBody = await loginResponse.json()
-        const token = loginBody.user.token
+        await use(loginBody.user.token)
+    },
 
-        api.withHeaders({ Authorization: `Token ${token}` })
+    authApi: async ({ request, authToken }, use) => {
+        const api = new ApiHelper(request, config.baseUrl)
+        api.withHeaders({ Authorization: `Token ${authToken}` })
         await use(api)
     },
 
-    authPage: async ({ page, request }, use) => {
-        // Login via API
-        const loginResponse = await request.post(`${config.baseUrl}/users/login`, {
-            data: {
-                user: {
-                    email: config.credentials.email,
-                    password: config.credentials.password
-                }
-            }
-        })
-
-        const loginBody = await loginResponse.json()
-        const token = loginBody.user.token
-
+    authPage: async ({ page, authToken }, use) => {
         // Go to site first
-        await page.goto('https://conduit.bondaracademy.com')
+        await page.goto(config.uiBaseUrl)
 
         // Set token in localStorage
         await page.evaluate((token) => {
             localStorage.setItem('jwtToken', token)
-        }, token)
+        }, authToken)
 
         // Reload and wait for login to apply
         await page.reload()
         await page.waitForLoadState('networkidle')
 
-        // Verify logged in (no "Sign in" link visible)
+        // Verify logged in
         await page.waitForSelector('a[href="/editor"]', { timeout: 10000 })
 
         await use(page)
+    },
+
+    // Each test gets its own state manager — safe for parallel
+    stateManager: async ({ }, use) => {
+        const state = new StateManager()
+        await use(state)
+        state.clear()
     },
 
     loginPage: async ({ page }, use) => {

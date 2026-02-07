@@ -1,16 +1,35 @@
-name: API Tests
+name: SDET Test Suite
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of tests to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - smoke
+          - api
+          - ui
+          - hybrid
+
+env:
+  NODE_VERSION: '20'
+  API_BASE_URL: ${{ secrets.API_BASE_URL }}
+  UI_BASE_URL: ${{ secrets.UI_BASE_URL }}
+  USER_EMAIL: ${{ secrets.USER_EMAIL }}
+  USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
 
 jobs:
-  test:
+  lint:
+    name: Code Quality
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,7 +37,61 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+  smoke-tests:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run smoke tests
+        run: npx playwright test --grep "@smoke" --project=api-tests
+
+      - name: Upload smoke test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-test-report
+          path: playwright-report/
+          retention-days: 7
+
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+    needs: smoke-tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
       - name: Install dependencies
@@ -27,24 +100,119 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
 
-      - name: Run smoke tests
-        run: npx playwright test --grep "@smoke"
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-          USER_EMAIL: ${{ secrets.USER_EMAIL }}
-          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      - name: Run API tests
+        run: npm run test:api
 
-      - name: Run all tests
-        run: npx playwright test
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-          USER_EMAIL: ${{ secrets.USER_EMAIL }}
-          USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
-
-      - name: Upload report
+      - name: Upload API test report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report
+          name: api-test-report
           path: playwright-report/
+          retention-days: 14
+
+  ui-tests:
+    name: UI Tests
+    runs-on: ubuntu-latest
+    needs: smoke-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Run UI tests on ${{ matrix.browser }}
+        run: npx playwright test --project=${{ matrix.browser }}
+
+      - name: Upload UI test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ui-test-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 14
+
+  hybrid-tests:
+    name: Hybrid Tests
+    runs-on: ubuntu-latest
+    needs: [api-tests, ui-tests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run hybrid tests
+        run: npm run test:hybrid
+
+      - name: Upload hybrid test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hybrid-test-report
+          path: playwright-report/
+          retention-days: 14
+
+  allure-report:
+    name: Generate Allure Report
+    runs-on: ubuntu-latest
+    needs: [api-tests, ui-tests, hybrid-tests]
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          path: allure-results
+          pattern: '*-test-report*'
+          merge-multiple: true
+
+      - name: Setup Java (for Allure)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Allure
+        run: |
+          wget -q https://github.com/allure-framework/allure2/releases/download/2.25.0/allure-2.25.0.tgz
+          tar -xzf allure-2.25.0.tgz
+          echo "$PWD/allure-2.25.0/bin" >> $GITHUB_PATH
+
+      - name: Generate Allure report
+        run: allure generate allure-results -o allure-report --clean
+        continue-on-error: true
+
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report
+          path: allure-report/
           retention-days: 30

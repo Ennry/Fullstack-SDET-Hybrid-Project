@@ -1,5 +1,4 @@
 # Playwright
-
 node_modules/
 /test-results/
 /playwright-report/
@@ -7,16 +6,18 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
+# Allure
+/allure-results/
+/allure-report/
+
+# Load Tests
+/load-tests/summary.json
+
 # Dependencies
 node_modules/
 
 # Environment
 .env
-
-# Test results
-test-results/
-playwright-report/
-playwright/.cache/
 
 # IDE
 .vscode/
@@ -28,3 +29,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Build
+/dist/

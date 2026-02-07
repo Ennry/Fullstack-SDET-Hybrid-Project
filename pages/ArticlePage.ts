@@ -3,10 +3,10 @@ import { BasePage } from './BasePage'
 
 export class ArticlePage extends BasePage {
 
-    private articleTitle = 'h1'
-    private articleBody = '.article-content p'
-    private deleteButton = 'button:has-text("Delete Article")'
-    private authorName = '.author'
+    private get articleTitle() { return this.page.locator('h1') }
+    private get articleBody() { return this.page.locator('.article-content p') }
+    private get deleteButton() { return this.page.locator('button:has-text("Delete Article")') }
+    private get authorName() { return this.page.locator('.author') }
 
     constructor(page: Page) {
         super(page)
@@ -17,22 +17,22 @@ export class ArticlePage extends BasePage {
     }
 
     async getTitle() {
-        return await this.page.textContent(this.articleTitle)
+        return await this.articleTitle.textContent()
     }
 
     async getBody() {
-        return await this.page.textContent(this.articleBody)
+        return await this.articleBody.textContent()
     }
 
     async getAuthor() {
-        return await this.page.textContent(this.authorName)
+        return await this.authorName.textContent()
     }
 
     async deleteArticle() {
-        await this.page.click(this.deleteButton)
+        await this.deleteButton.click()
     }
 
     async isArticleVisible() {
-        return await this.page.isVisible(this.articleTitle)
+        return await this.articleTitle.isVisible()
     }
 }
