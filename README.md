@@ -309,15 +309,15 @@ npx playwright show-report
 
 ## Multi-Environment Support
 
-# Staging (default)
+### Staging (default)
 
 npx playwright test
 
-# Production
+### Production
 
 TEST_ENV=prod npx playwright test
 
-# Local development
+### Local development
 
 TEST_ENV=local npx playwright test
 
@@ -401,18 +401,6 @@ Tests run automatically on:
 - Push to `main` branch
 - Pull requests to `main` branch
 - Manual trigger with test type selection
-
-## Pipeline Flow
-
-Lint & Format Check
-↓
-Smoke Tests
-↓ ↓
-API Tests UI Tests (Chrome, Firefox, Safari)
-↓ ↓
-Hybrid Tests
-↓
-Allure Report
 
 View results: [GitHub Actions](https://github.com/Ennry/Fullstack-SDET-Hybrid-Project/actions)
 
