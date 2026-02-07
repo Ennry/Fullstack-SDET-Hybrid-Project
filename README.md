@@ -48,10 +48,9 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
     - Validates both single article and article list item structures.
     - Ensures response structure is correct, not only status codes.
 
-- **Configuration (`utils/config.ts` + `utils/environments.ts`)**
+- **Configuration (`utils/config.ts`)**
     - **Fail-fast validation** for required environment variables.
-    - Multi-environment support (staging, production, local).
-    - Environment selection via `TEST_ENV` variable.
+    - Environment-based configuration via `.env` files.
 
 ---
 
@@ -297,17 +296,16 @@ npx playwright show-report
 
 ## Multi-Environment Support
 
-### Staging (default)
-
+```bash
+# Staging (default)
 npx playwright test
 
-### Production
-
+# Production
 TEST_ENV=prod npx playwright test
 
-### Local development
-
+# Local development
 TEST_ENV=local npx playwright test
+```
 
 ## Test Categories
 
