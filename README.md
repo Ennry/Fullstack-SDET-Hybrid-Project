@@ -73,33 +73,30 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
 ![k6](https://img.shields.io/badge/k6-7D64FF?style=flat&logo=k6&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat&logo=eslint&logoColor=white)
 
-| Category            | Skill               | Implementation                             |
-| ------------------- | ------------------- | ------------------------------------------ |
-| **Testing**         | API Testing         | Fluent API Helper with retry & generics    |
-|                     | UI Testing          | Page Object Model (Locator API)            |
-|                     | Hybrid Testing      | API + UI Combined                          |
-|                     | Contract Testing    | JSON Schema / AJV with caching             |
-|                     | Data-Driven         | Parameterized Tests                        |
-|                     | Error Handling      | Negative Test Cases (401, 404, 422)        |
-|                     | Cross-Browser       | Chrome, Firefox, Safari                    |
-|                     | Mobile Testing      | Pixel 5, iPhone 12                         |
-|                     | Performance Testing | Page Load & API Response (Performance API) |
-|                     | Load Testing        | k6 Scripts with staged load                |
-| **Design Patterns** | Fluent Interface    | `apiHelper.ts`                             |
-|                     | Factory Pattern     | `dataFactory.ts`                           |
-|                     | Page Object Model   | `pages/*.ts`                               |
-|                     | Builder Pattern     | API chaining `.path().getRequest()`        |
-|                     | Singleton Guard     | Factory-based state management             |
-| **Utilities**       | Custom Logger       | Request/Response Logging                   |
-|                     | Custom Reporter     | Real-time execution summary                |
-|                     | Config Manager      | Multi-env with fail-fast validation        |
-|                     | State Manager       | Test-scoped (parallel-safe)                |
-|                     | Global Setup        | Health checks & data cleanup               |
-|                     | Schema Cache        | Compiled schema reuse                      |
-| **DevOps**          | CI/CD               | GitHub Actions (multi-browser matrix)      |
-|                     | Reporting           | Playwright HTML + Allure                   |
-|                     | Artifact Upload     | Test reports per browser                   |
-
+| Category | Skill | Implementation |
+|----------|-------|----------------|
+| **Testing** | API Testing | Fluent API Helper with retry & generics |
+| | UI Testing | Page Object Model (Locator API) |
+| | Hybrid Testing | API + UI Combined |
+| | Contract Testing | JSON Schema / AJV with caching |
+| | Data-Driven | Parameterized Tests |
+| | Error Handling | Negative Test Cases (401, 404, 422) |
+| | Cross-Browser | Chrome, Firefox, Safari |
+| | Mobile Testing | Pixel 5, iPhone 12 |
+| | Performance Testing | Page Load & API Response (Performance API) |
+| | Load Testing | k6 Scripts with staged load |
+| **Design Patterns** | Fluent Interface | `apiHelper.ts` |
+| | Factory Pattern | `dataFactory.ts` |
+| | Page Object Model | `pages/*.ts` |
+| | Builder Pattern | API chaining `.path().getRequest()` |
+| | Singleton Guard | Factory-based state management |
+| **Utilities** | Custom Logger | Request/Response Logging |
+| | Config Manager | Env-based with fail-fast validation |
+| | State Manager | Test-scoped (parallel-safe) |
+| | Schema Cache | Compiled schema reuse |
+| **DevOps** | CI/CD | GitHub Actions (multi-browser matrix) |
+| | Reporting | Playwright HTML + Allure |
+| | Artifact Upload | Test reports per browser |
 ---
 
 ### Custom Logger Example
@@ -243,14 +240,11 @@ Fullstack-SDET-Hybrid-Project/
 │   ├── dataFactory.ts            # Test data generators
 │   ├── stateManager.ts           # Test-scoped state (parallel-safe)
 │   ├── logger.ts                 # Structured request/response logging
-│   ├── config.ts                 # Config with fail-fast env validation
-│   ├── environments.ts           # Multi-environment definitions
-│   ├── customReporter.ts         # Custom test execution reporter
-│   ├── performanceHelper.ts      # Performance timing utility
-│   ├── globalSetup.ts            # Health checks & data cleanup
-│   └── globalTeardown.ts         # Post-run teardown
+│   └── config.ts                 # Config with fail-fast env validation
 │
 ├── .env.example
+├── .env.staging.example
+├── .env.production.example
 ├── .gitignore
 ├── .prettierrc
 ├── eslint.config.mjs
