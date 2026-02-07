@@ -2,12 +2,19 @@ import { Page } from '@playwright/test'
 import { BasePage } from './BasePage'
 
 export class HomePage extends BasePage {
-
-    private get articleLinks() { return this.page.locator('.article-preview h1') }
-    private get tagList() { return this.page.locator('.sidebar .tag-list') }
+    private get articleLinks() {
+        return this.page.locator('.article-preview h1')
+    }
+    private get tagList() {
+        return this.page.locator('.sidebar .tag-list')
+    }
     // Try multiple possible selectors for tag pills
-    private get tagPills() { return this.page.locator('.sidebar .tag-list a') }
-    private get navUsername() { return this.page.locator('.nav-link:has-text("Your Feed")') }
+    private get tagPills() {
+        return this.page.locator('.sidebar .tag-list a')
+    }
+    private get navUsername() {
+        return this.page.locator('.nav-link:has-text("Your Feed")')
+    }
 
     constructor(page: Page) {
         super(page)

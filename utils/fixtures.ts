@@ -20,7 +20,6 @@ type Fixtures = {
 }
 
 export const test = base.extend<Fixtures>({
-
     api: async ({ request }, use) => {
         const api = new ApiHelper(request, config.baseUrl)
         await use(api)
@@ -53,7 +52,7 @@ export const test = base.extend<Fixtures>({
     authPage: async ({ page, authToken }, use) => {
         await page.goto(config.uiBaseUrl)
 
-        await page.evaluate((token) => {
+        await page.evaluate(token => {
             localStorage.setItem('jwtToken', token)
         }, authToken)
 
@@ -86,7 +85,6 @@ export const test = base.extend<Fixtures>({
     homePage: async ({ page }, use) => {
         await use(new HomePage(page))
     }
-
 })
 
 export { expect } from '@playwright/test'

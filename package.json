@@ -1,53 +1,53 @@
 {
-  "name": "fullstack-sdet-hybrid-project",
-  "version": "1.0.0",
-  "description": "Playwright Hybrid Testing Framework - API + UI + Performance",
-  "main": "index.js",
-  "scripts": {
-    "test": "playwright test",
-    "test:api": "playwright test --project=api-tests",
-    "test:ui": "playwright test --project=chromium --project=firefox --project=webkit",
-    "test:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
-    "test:smoke": "playwright test --grep @smoke",
-    "test:crud": "playwright test --grep @crud",
-    "test:negative": "playwright test --grep @negative",
-    "test:hybrid": "playwright test --project=chromium --grep @hybrid",
-    "test:performance": "playwright test --project=performance",
-    "test:data-driven": "playwright test --grep @data-driven",
-    "report": "playwright show-report",
-    "allure:generate": "allure generate allure-results -o allure-report --clean",
-    "allure:open": "allure open allure-report",
-    "allure:serve": "allure serve allure-results",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
-  "keywords": [
-    "playwright",
-    "testing",
-    "sdet",
-    "automation",
-    "typescript",
-    "api-testing"
-  ],
-  "author": "Ennry",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.54.0",
-    "@typescript-eslint/parser": "^8.54.0",
-    "ajv": "^8.17.1",
-    "allure-commandline": "^2.36.0",
-    "allure-playwright": "^3.4.5",
-    "dotenv": "^17.2.3",
-    "eslint": "^9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "prettier": "^3.8.1"
-  },
-  "dependencies": {
-    "ajv-formats": "^3.0.1"
-  }
+    "name": "fullstack-sdet-hybrid-project",
+    "version": "1.0.0",
+    "description": "Playwright Hybrid Testing Framework - API + UI + Performance",
+    "main": "index.js",
+    "scripts": {
+        "test": "playwright test",
+        "test:api": "playwright test --project=api-tests",
+        "test:ui": "playwright test --project=chromium --project=firefox --project=webkit",
+        "test:mobile": "playwright test --project=mobile-chrome --project=mobile-safari",
+        "test:smoke": "playwright test --grep @smoke",
+        "test:crud": "playwright test --grep @crud",
+        "test:negative": "playwright test --grep @negative",
+        "test:hybrid": "playwright test --project=chromium --grep @hybrid",
+        "test:performance": "playwright test --project=performance",
+        "test:data-driven": "playwright test --grep @data-driven",
+        "report": "playwright show-report",
+        "allure:generate": "allure generate allure-results -o allure-report --clean",
+        "allure:open": "allure open allure-report",
+        "allure:serve": "allure serve allure-results",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "keywords": [
+        "playwright",
+        "testing",
+        "sdet",
+        "automation",
+        "typescript",
+        "api-testing"
+    ],
+    "author": "Ennry",
+    "license": "ISC",
+    "type": "commonjs",
+    "devDependencies": {
+        "@playwright/test": "^1.57.0",
+        "@types/node": "^25.0.3",
+        "@typescript-eslint/eslint-plugin": "^8.54.0",
+        "@typescript-eslint/parser": "^8.54.0",
+        "ajv": "^8.17.1",
+        "allure-commandline": "^2.36.0",
+        "allure-playwright": "^3.4.5",
+        "dotenv": "^17.2.3",
+        "eslint": "^9.39.2",
+        "eslint-config-prettier": "^10.1.8",
+        "prettier": "^3.8.1"
+    },
+    "dependencies": {
+        "ajv-formats": "^3.0.1"
+    }
 }

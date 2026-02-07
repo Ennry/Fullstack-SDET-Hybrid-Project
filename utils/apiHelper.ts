@@ -69,7 +69,9 @@ export class ApiHelper {
             } catch (error) {
                 lastError = error as Error
                 if (attempt < this.retryCount) {
-                    logger.info(`${operationName} failed (attempt ${attempt}/${this.retryCount}), retrying in ${this.retryDelay}ms...`)
+                    logger.info(
+                        `${operationName} failed (attempt ${attempt}/${this.retryCount}), retrying in ${this.retryDelay}ms...`
+                    )
                     await new Promise(resolve => setTimeout(resolve, this.retryDelay))
                 }
             }
@@ -89,8 +91,8 @@ export class ApiHelper {
             logger.error(`Expected ${expectedStatus}, got ${status}`)
             throw new Error(
                 `Expected ${expectedStatus}, got ${status}\n` +
-                `URL: ${url}\n` +
-                `Response: ${body}`
+                    `URL: ${url}\n` +
+                    `Response: ${body}`
             )
         }
 

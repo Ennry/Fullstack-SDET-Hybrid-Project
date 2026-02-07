@@ -1,7 +1,7 @@
-import eslint from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsparser from '@typescript-eslint/parser';
-import prettier from 'eslint-config-prettier';
+import eslint from '@eslint/js'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsparser from '@typescript-eslint/parser'
+import prettier from 'eslint-config-prettier'
 
 export default [
     eslint.configs.recommended,
@@ -43,8 +43,8 @@ export default [
             'no-var': 'error',
 
             // Best practices
-            'eqeqeq': ['error', 'always'],
-            'curly': ['error', 'all'],
+            eqeqeq: ['error', 'always'],
+            curly: ['error', 'all'],
             'no-throw-literal': 'error',
 
             // Turn off base rules that are handled by TypeScript
@@ -65,5 +65,4 @@ export default [
         ]
     },
     prettier
-];
-
+]

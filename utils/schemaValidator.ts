@@ -4,7 +4,10 @@ import addFormats from 'ajv-formats'
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv)
 
-export function validateSchema(schema: object, data: unknown): { valid: boolean; errors: string | null } {
+export function validateSchema(
+    schema: object,
+    data: unknown
+): { valid: boolean; errors: string | null } {
     const validate = ajv.compile(schema)
     const valid = validate(data)
 

@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test'
 import { config } from '../../utils/config'
 
 test.describe('Performance Tests @performance', () => {
-
     test.beforeAll(async ({ browser }) => {
         const page = await browser.newPage()
         await page.goto(config.uiBaseUrl)
@@ -16,7 +15,9 @@ test.describe('Performance Tests @performance', () => {
         await page.waitForLoadState('load')
 
         const perfTiming = await page.evaluate(() => {
-            const timing = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+            const timing = window.performance.getEntriesByType(
+                'navigation'
+            )[0] as PerformanceNavigationTiming
             return {
                 domContentLoaded: Math.round(timing.domContentLoadedEventEnd - timing.startTime),
                 fullLoad: Math.round(timing.loadEventEnd - timing.startTime),
@@ -36,7 +37,9 @@ test.describe('Performance Tests @performance', () => {
         await page.waitForLoadState('load')
 
         const perfTiming = await page.evaluate(() => {
-            const timing = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+            const timing = window.performance.getEntriesByType(
+                'navigation'
+            )[0] as PerformanceNavigationTiming
             return {
                 fullLoad: Math.round(timing.loadEventEnd - timing.startTime)
             }
@@ -73,5 +76,4 @@ test.describe('Performance Tests @performance', () => {
         console.log(`Articles render time: ${renderTime}ms`)
         expect(renderTime).toBeLessThan(5000)
     })
-
 })

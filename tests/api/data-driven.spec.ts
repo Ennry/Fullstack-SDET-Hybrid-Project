@@ -40,30 +40,24 @@ const invalidArticles = [
 ]
 
 test.describe('Data-Driven Tests @data-driven', () => {
-
     for (const article of validArticles) {
         test(`Create valid article: "${article.title}" @positive`, async ({ authApi }) => {
             let slug: string | undefined
 
             try {
-                const response = await authApi
-                    .path('/articles')
-                    .postRequest(201, {
-                        article: {
-                            ...article,
-                            title: `${article.title} ${Date.now()}`
-                        }
-                    })
+                const response = await authApi.path('/articles').postRequest(201, {
+                    article: {
+                        ...article,
+                        title: `${article.title} ${Date.now()}`
+                    }
+                })
 
                 slug = response.article.slug
                 expect(response.article).toHaveProperty('slug')
                 expect(response.article.description).toBe(article.description)
-
             } finally {
                 if (slug) {
-                    await authApi
-                        .path(`/articles/${slug}`)
-                        .deleteRequest()
+                    await authApi.path(`/articles/${slug}`).deleteRequest()
                 }
             }
         })
@@ -71,12 +65,9 @@ test.describe('Data-Driven Tests @data-driven', () => {
 
     for (const testCase of invalidArticles) {
         test(`Reject invalid article: ${testCase.name} @negative`, async ({ authApi }) => {
-            await authApi
-                .path('/articles')
-                .postRequest(testCase.expectedStatus, {
-                    article: testCase.data
-                })
+            await authApi.path('/articles').postRequest(testCase.expectedStatus, {
+                article: testCase.data
+            })
         })
     }
-
 })

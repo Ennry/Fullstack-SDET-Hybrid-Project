@@ -2,12 +2,19 @@ import { Page } from '@playwright/test'
 import { BasePage } from './BasePage'
 
 export class LoginPage extends BasePage {
-
     // Use getters so locators are created from the live page instance
-    private get emailInput() { return this.page.locator('[placeholder="Email"]') }
-    private get passwordInput() { return this.page.locator('[placeholder="Password"]') }
-    private get signInButton() { return this.page.locator('button:has-text("Sign in")') }
-    private get errorMessages() { return this.page.locator('.error-messages') }
+    private get emailInput() {
+        return this.page.locator('[placeholder="Email"]')
+    }
+    private get passwordInput() {
+        return this.page.locator('[placeholder="Password"]')
+    }
+    private get signInButton() {
+        return this.page.locator('button:has-text("Sign in")')
+    }
+    private get errorMessages() {
+        return this.page.locator('.error-messages')
+    }
 
     constructor(page: Page) {
         super(page)

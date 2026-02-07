@@ -5,7 +5,6 @@ import { EditorPage } from '../../pages/EditorPage'
 import { HomePage } from '../../pages/HomePage'
 
 test.describe('Hybrid Tests - API + UI @hybrid', () => {
-
     test('Create article via API, verify in UI', async ({ authApi, authPage }) => {
         let slug: string | undefined
 
@@ -28,7 +27,6 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             const title = await articlePage.getTitle()
             expect(title).toContain('Hybrid')
             console.log('UI: Article verified')
-
         } finally {
             if (slug) {
                 await authApi.path(`/articles/${slug}`).deleteRequest()
@@ -46,12 +44,9 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
 
             // UI: Create article
             await editorPage.goto()
-            await editorPage.createArticle(
-                uniqueTitle,
-                'Test description',
-                'Test body content',
-                ['hybrid-test']
-            )
+            await editorPage.createArticle(uniqueTitle, 'Test description', 'Test body content', [
+                'hybrid-test'
+            ])
 
             slug = await editorPage.getSlugFromUrl()
             console.log('UI: Article created:', slug)
@@ -59,13 +54,10 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             if (!slug) throw new Error('Could not extract slug from URL')
 
             // API: Verify article
-            const response = await authApi
-                .path(`/articles/${slug}`)
-                .getRequest()
+            const response = await authApi.path(`/articles/${slug}`).getRequest()
 
             expect(response.article.title).toBe(uniqueTitle)
             console.log('API: Article verified')
-
         } finally {
             if (slug) {
                 await authApi.path(`/articles/${slug}`).deleteRequest()
@@ -101,7 +93,6 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             console.log('UI: Confirmed article gone')
 
             slug = undefined // Already deleted, skip finally cleanup
-
         } finally {
             if (slug) {
                 await authApi.path(`/articles/${slug}`).deleteRequest()
@@ -139,5 +130,4 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
         expect(commonTags.length).toBeGreaterThan(0)
         console.log('Verified tag sync')
     })
-
 })

@@ -2,12 +2,21 @@ import { Page } from '@playwright/test'
 import { BasePage } from './BasePage'
 
 export class EditorPage extends BasePage {
-
-    private get titleInput() { return this.page.locator('[placeholder="Article Title"]') }
-    private get descriptionInput() { return this.page.locator('[placeholder="What\'s this article about?"]') }
-    private get bodyInput() { return this.page.locator('[placeholder="Write your article (in markdown)"]') }
-    private get tagsInput() { return this.page.locator('[placeholder="Enter tags"]') }
-    private get publishButton() { return this.page.locator('button:has-text("Publish")') }
+    private get titleInput() {
+        return this.page.locator('[placeholder="Article Title"]')
+    }
+    private get descriptionInput() {
+        return this.page.locator('[placeholder="What\'s this article about?"]')
+    }
+    private get bodyInput() {
+        return this.page.locator('[placeholder="Write your article (in markdown)"]')
+    }
+    private get tagsInput() {
+        return this.page.locator('[placeholder="Enter tags"]')
+    }
+    private get publishButton() {
+        return this.page.locator('button:has-text("Publish")')
+    }
 
     constructor(page: Page) {
         super(page)

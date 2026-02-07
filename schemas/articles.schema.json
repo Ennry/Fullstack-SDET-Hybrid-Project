@@ -1,42 +1,51 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["articles", "articlesCount"],
-  "properties": {
-    "articles": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["slug", "title", "description", "body", "tagList", "createdAt", "updatedAt", "author"],
-        "properties": {
-          "slug": { "type": "string", "minLength": 1 },
-          "title": { "type": "string" },
-          "description": { "type": "string" },
-          "body": { "type": "string" },
-          "tagList": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["articles", "articlesCount"],
+    "properties": {
+        "articles": {
             "type": "array",
-            "items": { "type": "string" }
-          },
-          "createdAt": { "type": "string" },
-          "updatedAt": { "type": "string" },
-          "favorited": { "type": "boolean" },
-          "favoritesCount": { "type": "integer", "minimum": 0 },
-          "author": {
-            "type": "object",
-            "required": ["username"],
-            "properties": {
-              "username": { "type": "string" },
-              "bio": { "type": ["string", "null"] },
-              "image": { "type": "string" },
-              "following": { "type": "boolean" }
+            "items": {
+                "type": "object",
+                "required": [
+                    "slug",
+                    "title",
+                    "description",
+                    "body",
+                    "tagList",
+                    "createdAt",
+                    "updatedAt",
+                    "author"
+                ],
+                "properties": {
+                    "slug": { "type": "string", "minLength": 1 },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "body": { "type": "string" },
+                    "tagList": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "createdAt": { "type": "string" },
+                    "updatedAt": { "type": "string" },
+                    "favorited": { "type": "boolean" },
+                    "favoritesCount": { "type": "integer", "minimum": 0 },
+                    "author": {
+                        "type": "object",
+                        "required": ["username"],
+                        "properties": {
+                            "username": { "type": "string" },
+                            "bio": { "type": ["string", "null"] },
+                            "image": { "type": "string" },
+                            "following": { "type": "boolean" }
+                        }
+                    }
+                }
             }
-          }
+        },
+        "articlesCount": {
+            "type": "integer",
+            "minimum": 0
         }
-      }
-    },
-    "articlesCount": {
-      "type": "integer",
-      "minimum": 0
     }
-  }
 }

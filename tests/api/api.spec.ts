@@ -6,11 +6,8 @@ import tagsSchema from '../../schemas/tags.schema.json'
 import { dataFactory } from '../../utils/dataFactory'
 
 test.describe('Conduit API', () => {
-
     test('GET - Fetch Tags @smoke @schema', async ({ api }) => {
-        const response = await api
-            .path('/tags')
-            .getRequest()
+        const response = await api.path('/tags').getRequest()
 
         const { valid, errors } = validateSchema(tagsSchema, response)
         expect(valid, `Schema errors: ${errors}`).toBe(true)
@@ -18,9 +15,7 @@ test.describe('Conduit API', () => {
     })
 
     test('GET - Fetch Articles @smoke @schema', async ({ api }) => {
-        const response = await api
-            .path('/articles')
-            .getRequest()
+        const response = await api.path('/articles').getRequest()
 
         const { valid, errors } = validateSchema(articlesSchema, response)
         expect(valid, `Schema errors: ${errors}`).toBe(true)
@@ -45,9 +40,7 @@ test.describe('Conduit API', () => {
             expect(createBody.article.title).toContain('CRUD Article')
 
             // READ
-            const readBody = await authApi
-                .path(`/articles/${slug}`)
-                .getRequest()
+            const readBody = await authApi.path(`/articles/${slug}`).getRequest()
 
             const readValidation = validateSchema(articleSchema, readBody)
             expect(readValidation.valid, `Schema errors: ${readValidation.errors}`).toBe(true)
@@ -68,23 +61,20 @@ test.describe('Conduit API', () => {
             expect(updateBody.article.description).toBe('Updated description')
 
             // DELETE
-            await authApi
-                .path(`/articles/${updatedSlug}`)
-                .deleteRequest()
+            await authApi.path(`/articles/${updatedSlug}`).deleteRequest()
 
             slug = undefined
             updatedSlug = undefined
             console.log('DELETE: Done')
 
             // VERIFY DELETION
-            const allArticles = await authApi
-                .path('/articles')
-                .getRequest()
+            const allArticles = await authApi.path('/articles').getRequest()
 
-            const deleted = allArticles.articles.find((a: { slug: string }) => a.slug === updatedSlug)
+            const deleted = allArticles.articles.find(
+                (a: { slug: string }) => a.slug === updatedSlug
+            )
             expect(deleted).toBeUndefined()
             console.log('VERIFIED: Article does not exist')
-
         } finally {
             // Cleanup if test failed mid-way
             const cleanupSlug = updatedSlug || slug
@@ -98,5 +88,4 @@ test.describe('Conduit API', () => {
             }
         }
     })
-
 })
