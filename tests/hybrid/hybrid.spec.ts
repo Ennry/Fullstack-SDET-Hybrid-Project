@@ -12,7 +12,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             // API: Create article
             const response = await authApi
                 .path('/articles')
-                .postRequest(201, dataFactory.article('Hybrid'))
+                .postRequest<{ article: { slug: string } }>(201, dataFactory.article('Hybrid'))
 
             slug = response.article.slug
             console.log('API: Article created:', slug)
@@ -54,7 +54,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             if (!slug) throw new Error('Could not extract slug from URL')
 
             // API: Verify article
-            const response = await authApi.path(`/articles/${slug}`).getRequest()
+            const response = await authApi.path(`/articles/${slug}`).getRequest<{ article: { title: string } }>()
 
             expect(response.article.title).toBe(uniqueTitle)
             console.log('API: Article verified')
@@ -73,7 +73,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             // API: Create article
             const response = await authApi
                 .path('/articles')
-                .postRequest(201, dataFactory.article('ToDelete'))
+                .postRequest<{ article: { slug: string } }>(201, dataFactory.article('ToDelete'))
 
             slug = response.article.slug
             console.log('API: Article created:', slug)
@@ -103,7 +103,7 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
 
     test('Verify tags sync between API and UI', async ({ api, page }) => {
         // API: Get tags
-        const apiResponse = await api.path('/tags').getRequest()
+        const apiResponse = await api.path('/tags').getRequest<{ tags: string[] }>()
         const apiTags: string[] = apiResponse.tags
         console.log('API: Got', apiTags.length, 'tags')
         console.log('API Tags (first 10):', apiTags.slice(0, 10))
