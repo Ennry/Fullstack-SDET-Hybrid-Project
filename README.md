@@ -285,7 +285,6 @@ npx playwright show-report
 | `npx playwright show-report`                | View HTML report         |
 | `k6 run load-tests/articles-load.js`        | Run k6 load test         |
 
-
 ## Test Categories
 
 | Tag            | Purpose             | Tests                         |
