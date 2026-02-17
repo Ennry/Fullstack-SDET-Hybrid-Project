@@ -45,12 +45,14 @@ test.describe('Data-Driven Tests @data-driven', () => {
             let slug: string | undefined
 
             try {
-                const response = await authApi.path('/articles').postRequest<{ article: { slug: string; description: string } }>(201, {
-                    article: {
-                        ...article,
-                        title: `${article.title} ${Date.now()}`
-                    }
-                })
+                const response = await authApi
+                    .path('/articles')
+                    .postRequest<{ article: { slug: string; description: string } }>(201, {
+                        article: {
+                            ...article,
+                            title: `${article.title} ${Date.now()}`
+                        }
+                    })
 
                 slug = response.article.slug
                 expect(response.article).toHaveProperty('slug')

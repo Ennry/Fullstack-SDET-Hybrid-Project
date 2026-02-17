@@ -5,7 +5,7 @@ function requireEnv(key: string): string {
     if (!value) {
         throw new Error(
             `Missing required env variable: ${key}\n` +
-            `Please set it in your .env file or CI environment.`
+                `Please set it in your .env file or CI environment.`
         )
     }
     return value

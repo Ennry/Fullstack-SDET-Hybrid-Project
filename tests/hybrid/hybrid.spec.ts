@@ -54,7 +54,9 @@ test.describe('Hybrid Tests - API + UI @hybrid', () => {
             if (!slug) throw new Error('Could not extract slug from URL')
 
             // API: Verify article
-            const response = await authApi.path(`/articles/${slug}`).getRequest<{ article: { title: string } }>()
+            const response = await authApi
+                .path(`/articles/${slug}`)
+                .getRequest<{ article: { title: string } }>()
 
             expect(response.article.title).toBe(uniqueTitle)
             console.log('API: Article verified')

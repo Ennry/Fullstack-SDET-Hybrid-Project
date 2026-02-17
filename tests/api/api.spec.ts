@@ -15,7 +15,9 @@ test.describe('Conduit API', () => {
     })
 
     test('GET - Fetch Articles @smoke @schema', async ({ api }) => {
-        const response = await api.path('/articles').getRequest<{ articles: Array<{ slug: string; title: string; description: string }> }>()
+        const response = await api
+            .path('/articles')
+            .getRequest<{ articles: Array<{ slug: string; title: string; description: string }> }>()
 
         const { valid, errors } = validateSchema(articlesSchema, response)
         expect(valid, `Schema errors: ${errors}`).toBe(true)
@@ -28,9 +30,9 @@ test.describe('Conduit API', () => {
 
         try {
             // CREATE
-            const createBody = await authApi
-                .path('/articles')
-                .postRequest<{ article: { slug: string; title: string; description: string } }>(201, dataFactory.article('CRUD'))
+            const createBody = await authApi.path('/articles').postRequest<{
+                article: { slug: string; title: string; description: string }
+            }>(201, dataFactory.article('CRUD'))
 
             const createValidation = validateSchema(articleSchema, createBody)
             expect(createValidation.valid, `Schema errors: ${createValidation.errors}`).toBe(true)
@@ -40,7 +42,9 @@ test.describe('Conduit API', () => {
             expect(createBody.article.title).toContain('CRUD Article')
 
             // READ
-            const readBody = await authApi.path(`/articles/${slug}`).getRequest<{ article: { slug: string; title: string; description: string } }>()
+            const readBody = await authApi
+                .path(`/articles/${slug}`)
+                .getRequest<{ article: { slug: string; title: string; description: string } }>()
 
             const readValidation = validateSchema(articleSchema, readBody)
             expect(readValidation.valid, `Schema errors: ${readValidation.errors}`).toBe(true)
@@ -49,9 +53,9 @@ test.describe('Conduit API', () => {
             expect(readBody.article.slug).toBe(slug)
 
             // UPDATE
-            const updateBody = await authApi
-                .path(`/articles/${slug}`)
-                .putRequest<{ article: { slug: string; title: string; description: string } }>(200, dataFactory.updateArticle('Updated'))
+            const updateBody = await authApi.path(`/articles/${slug}`).putRequest<{
+                article: { slug: string; title: string; description: string }
+            }>(200, dataFactory.updateArticle('Updated'))
 
             const updateValidation = validateSchema(articleSchema, updateBody)
             expect(updateValidation.valid, `Schema errors: ${updateValidation.errors}`).toBe(true)
@@ -68,7 +72,9 @@ test.describe('Conduit API', () => {
             console.log('DELETE: Done')
 
             // VERIFY DELETION
-            const allArticles = await authApi.path('/articles').getRequest<{ articles: Array<{ slug: string }> }>()
+            const allArticles = await authApi
+                .path('/articles')
+                .getRequest<{ articles: Array<{ slug: string }> }>()
 
             const deleted = allArticles.articles.find(
                 (a: { slug: string }) => a.slug === updatedSlug
