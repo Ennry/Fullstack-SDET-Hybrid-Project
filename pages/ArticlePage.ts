@@ -24,15 +24,15 @@ export class ArticlePage extends BasePage {
     }
 
     async getTitle() {
-        return await this.articleTitle.textContent()
+        return (await this.articleTitle.textContent()) ?? ''
     }
 
     async getBody() {
-        return await this.articleBody.textContent()
+        return (await this.articleBody.textContent()) ?? ''
     }
 
     async getAuthor() {
-        return await this.authorName.textContent()
+        return (await this.authorName.textContent()) ?? ''
     }
 
     async deleteArticle() {
