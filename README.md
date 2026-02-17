@@ -35,22 +35,15 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
         - `authToken`: shared authentication token (single login per test)
         - `authApi`: authenticated API client (token attached)
         - `authPage`: authenticated browser page (localStorage injection)
-        - `stateManager`: test-scoped state (safe for parallel execution)
-
-- **State Management (`utils/stateManager.ts`)**
-    - Factory-based instantiation — each test gets its own instance.
-    - Stores data created during tests (e.g., `slug`, `articleId`) to share across steps.
-    - Supports cleanup and avoids global variables.
 
 - **Contract Testing (`schemas/*.json` + `utils/schemaValidator.ts`)**
     - Validates API responses against JSON Schemas (AJV).
-    - **Schema caching** to avoid recompilation overhead.
     - Validates both single article and article list item structures.
     - Ensures response structure is correct, not only status codes.
 
 - **Configuration (`utils/config.ts`)**
-    - **Fail-fast validation** for required environment variables.
     - Environment-based configuration via `.env` files.
+    - Sensible fallback defaults for local development.
 
 ---
 
@@ -88,11 +81,9 @@ This framework is built as a **hybrid UI + API** test solution using Playwright 
 |                     | Factory Pattern     | `dataFactory.ts`                           |
 |                     | Page Object Model   | `pages/*.ts`                               |
 |                     | Builder Pattern     | API chaining `.path().getRequest()`        |
-|                     | Singleton Guard     | Factory-based state management             |
 | **Utilities**       | Custom Logger       | Request/Response Logging                   |
-|                     | Config Manager      | Env-based with fail-fast validation        |
-|                     | State Manager       | Test-scoped (parallel-safe)                |
-|                     | Schema Cache        | Compiled schema reuse                      |
+|                     | Config Manager      | Env-based with fallback defaults           |
+|                     | Schema Validator    | AJV JSON Schema validation                 |
 | **DevOps**          | CI/CD               | GitHub Actions (multi-browser matrix)      |
 |                     | Reporting           | Playwright HTML + Allure                   |
 |                     | Artifact Upload     | Test reports per browser                   |
@@ -236,11 +227,10 @@ Fullstack-SDET-Hybrid-Project/
 ├── 📂 utils/
 │   ├── apiHelper.ts              # Fluent API client (retry, generics, auto-reset)
 │   ├── fixtures.ts               # Playwright fixtures (shared auth token)
-│   ├── schemaValidator.ts        # JSON Schema validation (with caching)
+│   ├── schemaValidator.ts        # JSON Schema validation (AJV)
 │   ├── dataFactory.ts            # Test data generators
-│   ├── stateManager.ts           # Test-scoped state (parallel-safe)
 │   ├── logger.ts                 # Structured request/response logging
-│   └── config.ts                 # Config with fail-fast env validation
+│   └── config.ts                 # Environment-based configuration
 │
 ├── .env.example
 ├── .env.staging.example
@@ -295,18 +285,6 @@ npx playwright show-report
 | `npx playwright show-report`                | View HTML report         |
 | `k6 run load-tests/articles-load.js`        | Run k6 load test         |
 
-## Multi-Environment Support
-
-```bash
-# Staging (default)
-npx playwright test
-
-# Production
-TEST_ENV=prod npx playwright test
-
-# Local development
-TEST_ENV=local npx playwright test
-```
 
 ## Test Categories
 

@@ -1,7 +1,7 @@
 import { test as base, Page } from '@playwright/test'
 import { ApiHelper } from './apiHelper'
 import { config } from './config'
-import { StateManager } from './stateManager'
+
 import { LoginPage } from '../pages/LoginPage'
 import { ArticlePage } from '../pages/ArticlePage'
 import { EditorPage } from '../pages/EditorPage'
@@ -16,7 +16,6 @@ type Fixtures = {
     editorPage: EditorPage
     homePage: HomePage
     authPage: Page
-    stateManager: StateManager
 }
 
 export const test = base.extend<Fixtures>({
@@ -61,13 +60,6 @@ export const test = base.extend<Fixtures>({
         await page.waitForSelector('a[href="/editor"]', { timeout: 10000 })
 
         await use(page)
-    },
-
-    // eslint-disable-next-line no-empty-pattern
-    stateManager: async ({}, use) => {
-        const state = new StateManager()
-        await use(state)
-        state.clear()
     },
 
     loginPage: async ({ page }, use) => {
